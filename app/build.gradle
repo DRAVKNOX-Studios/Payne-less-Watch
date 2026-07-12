@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.timely.msminutes'
+    compileSdk 37
+
+    defaultConfig {
+        applicationId "com.timely.msminutes"
+        minSdk 26
+        targetSdk 37
+        versionCode 100
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding false
+        buildConfig true
+    }
+}
+
+dependencies {
+    constraints {
+        implementation(libs.kotlin.stdlib.jdk7) {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation(libs.kotlin.stdlib.jdk8) {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.fragment
+    implementation libs.androidx.activity
+    implementation libs.androidx.viewpager2
+
+    testImplementation libs.junit
+}
