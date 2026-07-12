@@ -1,0 +1,32 @@
+# Version catalog — single source of truth for all dependency versions.
+# F-Droid and reproducible builds rely on exact version pins here.
+[versions]
+agp                = "9.2.1"
+gradle = "9.2.1"
+kotlin             = "2.4.0"
+coreKtx            = "1.19.0"
+appcompat          = "1.7.1"
+kotlinGradlePlugin = "2.1.21"
+kotlinStdlibJdk8 = "2.2.10"
+recyclerview       = "1.4.0"
+fragment           = "1.8.9"
+activity           = "1.13.0"
+viewpager2         = "1.1.0"
+junit              = "4.13.2"
+
+[libraries]
+androidx-core      = { module = "androidx.core:core",                      version.ref = "coreKtx"     }
+androidx-appcompat = { module = "androidx.appcompat:appcompat",             version.ref = "appcompat"   }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview",    version.ref = "recyclerview" }
+androidx-fragment  = { module = "androidx.fragment:fragment",               version.ref = "fragment"    }
+androidx-activity  = { module = "androidx.activity:activity",               version.ref = "activity"    }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2",          version.ref = "viewpager2"  }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+junit              = { module = "junit:junit",                               version.ref = "junit"       }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlinStdlibJdk8" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinStdlibJdk8" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp"    }
+kotlin-android      = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

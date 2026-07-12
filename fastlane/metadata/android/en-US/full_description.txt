@@ -1,0 +1,14 @@
+Payne-less : Watch is a lightweight, open-source clock app with no ads, no analytics, and no internet permissions.
+
+Features:
+• Alarms - repeating days, custom ringtone, gradual volume ramp, snooze, label and notes
+• Timers - multiple concurrent timers with foreground service notification
+• Stopwatch - lap tracking with foreground service
+• World Clock - track time across multiple time zones
+• Home screen widget - live clock with next alarm display, fully themeable
+• Full custom theming - choose your own background and accent colours
+• Missed alarm notifications with reschedule on boot, timezone change, and app update
+
+Privacy:
+Payne-less : Watch stores all data locally on your device. No data is collected, transmitted, or shared.
+No network permissions are requested.

@@ -1,0 +1,7 @@
+Initial stable release (1.0.0).
+• Core alarm, timer, and stopwatch functionality
+• World Clock to track time across multiple time zones
+• Home screen clock widget with theme support
+• Custom colour theming engine
+• Gradual volume ramp for alarms
+• Improved stability and performance
