@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/widget_background_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/widget_background"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <TextView
+            android:id="@+id/widget_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:layout_marginBottom="2dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
+
+        <!-- Time row: digits + optional AM/PM badge -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- Digit 1 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/digit_text_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="72sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="0" />
+                    <ImageView
+                        android:id="@+id/digit_img_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="centerInside" />
+                    <FrameLayout
+                        android:id="@+id/digit_pupil_container_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/digit_pupil_1"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/widget_pupil"
+                            android:scaleType="centerInside" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Digit 2 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/digit_text_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="72sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="0" />
+                    <ImageView
+                        android:id="@+id/digit_img_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="centerInside" />
+                    <FrameLayout
+                        android:id="@+id/digit_pupil_container_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/digit_pupil_2"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/widget_pupil"
+                            android:scaleType="centerInside" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/widget_colon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=":"
+                        android:textSize="72sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:paddingBottom="10dp" />
+                    <ImageView
+                        android:id="@+id/widget_colon_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="centerInside"
+                        android:paddingBottom="10dp" />
+                </FrameLayout>
+
+                <!-- Digit 3 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/digit_text_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="72sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="0" />
+                    <ImageView
+                        android:id="@+id/digit_img_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="centerInside" />
+                    <FrameLayout
+                        android:id="@+id/digit_pupil_container_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/digit_pupil_3"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/widget_pupil"
+                            android:scaleType="centerInside" />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Digit 4 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/digit_text_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="72sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="0" />
+                    <ImageView
+                        android:id="@+id/digit_img_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:scaleType="centerInside" />
+                    <FrameLayout
+                        android:id="@+id/digit_pupil_container_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/digit_pupil_4"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/widget_pupil"
+                            android:scaleType="centerInside" />
+                    </FrameLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- AM/PM badge: bottom-end corner of the time area, only visible in 12h mode -->
+            <TextView
+                android:id="@+id/widget_am_pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/alarm_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp">
+                    <ImageView
+                        android:id="@+id/widget_alarm_icon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/ic_alarm" />
+                    <TextView
+                        android:id="@+id/widget_next_alarm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1" />
+                    <TextView
+                        android:id="@+id/widget_alarm_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:textSize="10sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/timer_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp">
+                    <ImageView
+                        android:id="@+id/widget_timer_icon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/ic_timer" />
+                    <Chronometer
+                        android:id="@+id/widget_timer_chrono"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1" />
+                    <TextView
+                        android:id="@+id/widget_timer_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:textSize="10sp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/stopwatch_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp">
+                    <ImageView
+                        android:id="@+id/widget_stopwatch_icon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/ic_stopwatch" />
+                    <Chronometer
+                        android:id="@+id/widget_stopwatch_chrono"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextClock
+                android:id="@+id/widget_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format12Hour="EEE, MMM d"
+                android:format24Hour="EEE, MMM d"
+                android:textSize="12sp"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <ImageView android:id="@+id/widget_btn_add" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <ImageView android:id="@+id/widget_btn_add_bg" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+
+</FrameLayout>

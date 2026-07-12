@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="set_alarm"
+        android:enabled="true"
+        android:icon="@drawable/ic_alarm"
+        android:shortcutShortLabel="@string/shortcut_set_alarm"
+        android:shortcutLongLabel="@string/shortcut_set_alarm">
+        <intent
+            android:action="android.intent.action.SET_ALARM"
+            android:targetPackage="com.timely.msminutes"
+            android:targetClass="com.timely.msminutes.ui.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="set_timer"
+        android:enabled="true"
+        android:icon="@drawable/ic_timer"
+        android:shortcutShortLabel="@string/shortcut_set_timer"
+        android:shortcutLongLabel="@string/shortcut_set_timer">
+        <intent
+            android:action="android.intent.action.SET_TIMER"
+            android:targetPackage="com.timely.msminutes"
+            android:targetClass="com.timely.msminutes.ui.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="start_stopwatch"
+        android:enabled="true"
+        android:icon="@drawable/ic_stopwatch"
+        android:shortcutShortLabel="@string/shortcut_start_stopwatch"
+        android:shortcutLongLabel="@string/shortcut_start_stopwatch">
+        <intent
+            android:action="com.timely.msminutes.START_STOPWATCH"
+            android:targetPackage="com.timely.msminutes"
+            android:targetClass="com.timely.msminutes.ui.MainActivity" />
+    </shortcut>
+</shortcuts>

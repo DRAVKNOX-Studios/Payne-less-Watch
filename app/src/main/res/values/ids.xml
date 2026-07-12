@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="view_bg_color" type="id" />
+    <item name="view_text_color" type="id" />
+    <item name="text_date" type="id" />
+</resources>

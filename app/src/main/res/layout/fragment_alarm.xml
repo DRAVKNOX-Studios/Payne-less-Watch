@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- Background is handled by MainActivity root to avoid overdraw and redundant views. -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_alarms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No alarms yet"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="16sp" />
+
+</FrameLayout>
