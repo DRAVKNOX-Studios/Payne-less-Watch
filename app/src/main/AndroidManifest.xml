@@ -1,91 +1,151 @@
-<!--suppress InjectedReferences, InjectedReferences -->
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- Required to open content:// screenshot URIs from the system clipboard.
-         READ_MEDIA_IMAGES is the API 33+ replacement for READ_EXTERNAL_STORAGE. -->
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33"
-        tools:ignore="all" />
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <!-- USE_EXACT_ALARM is auto-granted on API 33+. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
+        android:minSdkVersion="33" />
+    <!-- On API 31-32 (Android 12/12L), SCHEDULE_EXACT_ALARM is required
+         instead. It must be granted by the user via Settings > Apps >
+         Special app access > Alarms & reminders. Without it setAlarmClock()
+         is silently ignored and alarms never fire. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
         android:maxSdkVersion="32" />
-
-    <queries>
-        <intent>
-            <action android:name="android.view.InputMethod" />
-        </intent>
-    </queries>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" android:minSdkVersion="33" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
+        android:name=".TimelyApp"
         android:allowBackup="false"
-        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:dataExtractionRules="@xml/backup_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.SwiftLite"
-        android:largeHeap="false"
-        tools:ignore="all">
+        android:theme="@style/Theme.Timely"
+        android:supportsRtl="true">
 
         <activity
-            android:name=".SetupActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.SwiftLite.Setup">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.SET_ALARM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SET_TIMER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SHOW_TIMERS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SHOW_ALARMS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
-
 
         <activity
-            android:name=".clipboard.ClipboardShareActivity"
-            android:exported="true"
-            android:label="Copy to Typer Clipboard"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:name=".ui.alarm.AlarmEditActivity"
+            android:exported="false"
+            android:label="@string/edit_alarm" />
+
+        <activity
+            android:name=".ui.alarm.AlarmRingActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.Timely.Ring" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings" />
+
+        <receiver android:name=".receiver.AlarmReceiver" android:exported="false" />
+        <receiver android:name=".receiver.TimerReceiver" android:exported="false" />
+        <receiver android:name=".receiver.BootReceiver" android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-                <data android:mimeType="text/plain" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
-        </activity>
+        </receiver>
+        <receiver android:name=".receiver.NotificationActionReceiver" android:exported="false" />
+
+        <receiver android:name=".receiver.WidgetTickReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.intent.action.TIME_CHANGED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <service
-            android:name=".ime.SwiftLiteIME"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:permission="android.permission.BIND_INPUT_METHOD"
-            android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data
-                android:name="android.view.im"
-                android:resource="@xml/method" />
+            android:name=".service.AlarmRingService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="alarm_ringing" />
         </service>
 
-        <!--
-            FileProvider for sharing clipboard image files via content:// URIs.
-            authorities must match SwiftLiteIME.FILE_PROVIDER_AUTHORITY.
-        -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.swiftlite.keyboard.fileprovider"
+        <service
+            android:name=".service.TimerService"
             android:exported="false"
-            android:grantUriPermissions="true"
-            android:directBootAware="true">
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="timer_running" />
+        </service>
+
+        <service
+            android:name=".service.StopwatchService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="stopwatch_running" />
+        </service>
+
+        <service
+            android:name=".widget.GooglyEyesService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".widget.ClockWidgetProvider"
+            android:exported="false"
+            android:label="Timely Clock"
+            android:icon="@drawable/widget_preview">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.timely.msminutes.UPDATE_WIDGET" />
+            </intent-filter>
+
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/fileprovider_paths" />
-        </provider>
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
 
     </application>
-
 </manifest>
