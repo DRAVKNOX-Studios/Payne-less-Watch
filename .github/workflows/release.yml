@@ -51,7 +51,7 @@ jobs:
       - name: Rename APK
         run: |
           mv app/build/outputs/apk/release/app-release.apk \
-             "Payne-less-Typer.apk"
+             "Payne-less-Watch.apk"
 
       # Clean up the keystore immediately after signing - don't leave it on the runner
       - name: Clean up keystore
@@ -64,5 +64,5 @@ jobs:
           name: "Payne-less: Typer ${{ steps.version.outputs.VERSION }}"
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
-          files: "Payne-less-Typer.apk"
+          files: "Payne-less-Watch.apk"
           fail_on_unmatched_files: true
