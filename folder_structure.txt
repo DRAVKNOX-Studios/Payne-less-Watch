@@ -1,99 +1,107 @@
-timely
+Payne-less-Watch
+├── .github
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   ├── config.yml
+│   │   └── feature_request.md
+│   ├── workflows
+│   │   ├── android.yml
+│   │   ├── folder-structure.yml
+│   │   ├── gradle.yml
+│   │   └── release.yml
+│   └── PULL_REQUEST_TEMPLATE.md
 ├── app
 │   ├── src
 │   │   ├── main
 │   │   │   ├── kotlin
 │   │   │   │   └── com
 │   │   │   │       └── timely
-│   │   │   │           ├── msminutes
-│   │   │   │           │   ├── app
-│   │   │   │           │   ├── data
-│   │   │   │           │   │   ├── Alarm.kt
-│   │   │   │           │   │   ├── AlarmRepository.kt
-│   │   │   │           │   │   ├── DbHelper.kt
-│   │   │   │           │   │   ├── LapStore.kt
-│   │   │   │           │   │   ├── Prefs.kt
-│   │   │   │           │   │   ├── TimerItem.kt
-│   │   │   │           │   │   └── TimerRepository.kt
-│   │   │   │           │   ├── receiver
-│   │   │   │           │   │   ├── AlarmReceiver.kt
-│   │   │   │           │   │   ├── BootReceiver.kt
-│   │   │   │           │   │   ├── NotificationActionReceiver.kt
-│   │   │   │           │   │   ├── TimerReceiver.kt
-│   │   │   │           │   │   └── WidgetTickReceiver.kt
-│   │   │   │           │   ├── service
-│   │   │   │           │   │   ├── AlarmNotificationHelper.kt
-│   │   │   │           │   │   ├── AlarmRingService.kt
-│   │   │   │           │   │   ├── StopwatchService.kt
-│   │   │   │           │   │   └── TimerService.kt
-│   │   │   │           │   ├── ui
-│   │   │   │           │   │   ├── alarm
-│   │   │   │           │   │   │   ├── AlarmAdapter.kt
-│   │   │   │           │   │   │   ├── AlarmDeletionHandler.kt
-│   │   │   │           │   │   │   ├── AlarmEditActivity.kt
-│   │   │   │           │   │   │   ├── AlarmEditDataHelper.kt
-│   │   │   │           │   │   │   ├── AlarmEditThemeHelper.kt
-│   │   │   │           │   │   │   ├── AlarmFragment.kt
-│   │   │   │           │   │   │   ├── AlarmRingActivity.kt
-│   │   │   │           │   │   │   ├── DaySelectionHelper.kt
-│   │   │   │           │   │   │   └── SoundPickerHelper.kt
-│   │   │   │           │   │   ├── settings
-│   │   │   │           │   │   │   ├── BackgroundPermissionHelper.kt
-│   │   │   │           │   │   │   ├── SettingsActivity.kt
-│   │   │   │           │   │   │   └── SettingsAdapter.kt
-│   │   │   │           │   │   ├── stopwatch
-│   │   │   │           │   │   │   ├── LapAdapter.kt
-│   │   │   │           │   │   │   └── StopwatchFragment.kt
-│   │   │   │           │   │   ├── timer
-│   │   │   │           │   │   │   ├── TimerActionHandler.kt
-│   │   │   │           │   │   │   ├── TimerAdapter.kt
-│   │   │   │           │   │   │   ├── TimerCreateDialog.kt
-│   │   │   │           │   │   │   ├── TimerCreateThemeHelper.kt
-│   │   │   │           │   │   │   ├── TimerDeletionHandler.kt
-│   │   │   │           │   │   │   └── TimerFragment.kt
-│   │   │   │           │   │   ├── view
-│   │   │   │           │   │   │   ├── ColorPickerDialog.kt
-│   │   │   │           │   │   │   ├── CustomColorPickerDialog.kt
-│   │   │   │           │   │   │   ├── DurationPicker.kt
-│   │   │   │           │   │   │   ├── SharedViewHolder.kt
-│   │   │   │           │   │   │   ├── SoundItem.kt
-│   │   │   │           │   │   │   ├── SoundPickerAdapter.kt
-│   │   │   │           │   │   │   ├── SoundPickerDialog.kt
-│   │   │   │           │   │   │   ├── SwipeToDeleteCallback.kt
-│   │   │   │           │   │   │   ├── ThemedNumberPicker.kt
-│   │   │   │           │   │   │   └── UndoBarController.kt
-│   │   │   │           │   │   ├── worldclock
-│   │   │   │           │   │   │   ├── WorldClockAdapter.kt
-│   │   │   │           │   │   │   └── WorldClockFragment.kt
-│   │   │   │           │   │   ├── MainActivity.kt
-│   │   │   │           │   │   └── MainActivityPermissionHelper.kt
-│   │   │   │           │   ├── util
-│   │   │   │           │   │   ├── AlarmScheduler.kt
-│   │   │   │           │   │   ├── AlarmTimeUtil.kt
-│   │   │   │           │   │   ├── AppExecutors.kt
-│   │   │   │           │   │   ├── NotificationChannels.kt
-│   │   │   │           │   │   ├── PowerButtonState.kt
-│   │   │   │           │   │   ├── RingPlayer.kt
-│   │   │   │           │   │   ├── SharedDrawablePool.kt
-│   │   │   │           │   │   ├── ThemeApplier.kt
-│   │   │   │           │   │   ├── ThemeStore.kt
-│   │   │   │           │   │   ├── ThemeTokens.kt
-│   │   │   │           │   │   ├── ThemeUtil.kt
-│   │   │   │           │   │   ├── TimeFormatUtil.kt
-│   │   │   │           │   │   ├── TimerScheduler.kt
-│   │   │   │           │   │   └── WakeLockHolder.kt
-│   │   │   │           │   ├── view
-│   │   │   │           │   │   ├── GooglyEyesView.kt
-│   │   │   │           │   │   └── SwipeDismissView.kt
-│   │   │   │           │   ├── widget
-│   │   │   │           │   │   ├── ClockWidgetProvider.kt
-│   │   │   │           │   │   ├── GooglyEyesController.kt
-│   │   │   │           │   │   ├── GooglyEyesService.kt
-│   │   │   │           │   │   ├── WidgetInfoProvider.kt
-│   │   │   │           │   │   └── WidgetNotifier.kt
-│   │   │   │           │   └── TimelyApp.kt
-│   │   │   │           ├── ui
-│   │   │   │           └── util
+│   │   │   │           └── msminutes
+│   │   │   │               ├── data
+│   │   │   │               │   ├── Alarm.kt
+│   │   │   │               │   ├── AlarmRepository.kt
+│   │   │   │               │   ├── DbHelper.kt
+│   │   │   │               │   ├── LapStore.kt
+│   │   │   │               │   ├── Prefs.kt
+│   │   │   │               │   ├── TimerItem.kt
+│   │   │   │               │   └── TimerRepository.kt
+│   │   │   │               ├── receiver
+│   │   │   │               │   ├── AlarmReceiver.kt
+│   │   │   │               │   ├── BootReceiver.kt
+│   │   │   │               │   ├── NotificationActionReceiver.kt
+│   │   │   │               │   ├── TimerReceiver.kt
+│   │   │   │               │   └── WidgetTickReceiver.kt
+│   │   │   │               ├── service
+│   │   │   │               │   ├── AlarmNotificationHelper.kt
+│   │   │   │               │   ├── AlarmRingService.kt
+│   │   │   │               │   ├── StopwatchService.kt
+│   │   │   │               │   └── TimerService.kt
+│   │   │   │               ├── ui
+│   │   │   │               │   ├── alarm
+│   │   │   │               │   │   ├── AlarmAdapter.kt
+│   │   │   │               │   │   ├── AlarmDeletionHandler.kt
+│   │   │   │               │   │   ├── AlarmEditActivity.kt
+│   │   │   │               │   │   ├── AlarmEditDataHelper.kt
+│   │   │   │               │   │   ├── AlarmEditThemeHelper.kt
+│   │   │   │               │   │   ├── AlarmFragment.kt
+│   │   │   │               │   │   ├── AlarmRingActivity.kt
+│   │   │   │               │   │   ├── DaySelectionHelper.kt
+│   │   │   │               │   │   └── SoundPickerHelper.kt
+│   │   │   │               │   ├── settings
+│   │   │   │               │   │   ├── BackgroundPermissionHelper.kt
+│   │   │   │               │   │   ├── SettingsActivity.kt
+│   │   │   │               │   │   └── SettingsAdapter.kt
+│   │   │   │               │   ├── stopwatch
+│   │   │   │               │   │   ├── LapAdapter.kt
+│   │   │   │               │   │   └── StopwatchFragment.kt
+│   │   │   │               │   ├── timer
+│   │   │   │               │   │   ├── TimerActionHandler.kt
+│   │   │   │               │   │   ├── TimerAdapter.kt
+│   │   │   │               │   │   ├── TimerCreateDialog.kt
+│   │   │   │               │   │   ├── TimerCreateThemeHelper.kt
+│   │   │   │               │   │   ├── TimerDeletionHandler.kt
+│   │   │   │               │   │   └── TimerFragment.kt
+│   │   │   │               │   ├── view
+│   │   │   │               │   │   ├── ColorPickerDialog.kt
+│   │   │   │               │   │   ├── CustomColorPickerDialog.kt
+│   │   │   │               │   │   ├── DurationPicker.kt
+│   │   │   │               │   │   ├── SharedViewHolder.kt
+│   │   │   │               │   │   ├── SoundItem.kt
+│   │   │   │               │   │   ├── SoundPickerAdapter.kt
+│   │   │   │               │   │   ├── SoundPickerDialog.kt
+│   │   │   │               │   │   ├── SwipeToDeleteCallback.kt
+│   │   │   │               │   │   ├── ThemedNumberPicker.kt
+│   │   │   │               │   │   └── UndoBarController.kt
+│   │   │   │               │   ├── worldclock
+│   │   │   │               │   │   ├── WorldClockAdapter.kt
+│   │   │   │               │   │   └── WorldClockFragment.kt
+│   │   │   │               │   ├── MainActivity.kt
+│   │   │   │               │   └── MainActivityPermissionHelper.kt
+│   │   │   │               ├── util
+│   │   │   │               │   ├── AlarmScheduler.kt
+│   │   │   │               │   ├── AlarmTimeUtil.kt
+│   │   │   │               │   ├── AppExecutors.kt
+│   │   │   │               │   ├── NotificationChannels.kt
+│   │   │   │               │   ├── PowerButtonState.kt
+│   │   │   │               │   ├── RingPlayer.kt
+│   │   │   │               │   ├── SharedDrawablePool.kt
+│   │   │   │               │   ├── ThemeApplier.kt
+│   │   │   │               │   ├── ThemeStore.kt
+│   │   │   │               │   ├── ThemeTokens.kt
+│   │   │   │               │   ├── ThemeUtil.kt
+│   │   │   │               │   ├── TimeFormatUtil.kt
+│   │   │   │               │   ├── TimerScheduler.kt
+│   │   │   │               │   └── WakeLockHolder.kt
+│   │   │   │               ├── view
+│   │   │   │               │   ├── GooglyEyesView.kt
+│   │   │   │               │   └── SwipeDismissView.kt
+│   │   │   │               ├── widget
+│   │   │   │               │   ├── ClockWidgetProvider.kt
+│   │   │   │               │   ├── GooglyEyesController.kt
+│   │   │   │               │   ├── GooglyEyesService.kt
+│   │   │   │               │   ├── WidgetInfoProvider.kt
+│   │   │   │               │   └── WidgetNotifier.kt
+│   │   │   │               └── TimelyApp.kt
 │   │   │   └── AndroidManifest.xml
 │   │   └── test
 │   │       └── kotlin
@@ -113,7 +121,7 @@ timely
 │       └── android
 │           └── en-US
 │               ├── changelogs
-│               │   └── 10.txt
+│               │   └── 100.txt
 │               ├── full_description.txt
 │               ├── short_description.txt
 │               └── title.txt
@@ -123,14 +131,23 @@ timely
 │   │   └── gradle-wrapper.properties
 │   ├── gradle-daemon-jvm.properties
 │   └── libs.versions.toml
+├── screenshots
+│   ├── Alarm.png
+│   ├── AlarmRing.png
+│   ├── AlarmSet.png
+│   ├── Settings.png
+│   ├── Stopwatch.png
+│   ├── Timer.png
+│   └── WorldClock.png
 ├── tools
 │   └── gen_tree.py
-├── .gitignore
 ├── build.gradle
+├── code_docs.md
+├── CONTRIBUTING.md
 ├── folder_structure.txt
 ├── gradle.properties
 ├── gradlew
 ├── gradlew.bat
-├── local.properties
+├── LICENSE
 ├── README.md
 └── settings.gradle
