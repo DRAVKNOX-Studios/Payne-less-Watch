@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -10,8 +11,8 @@ android {
         applicationId "com.timely.msminutes"
         minSdk 26
         targetSdk 37
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 200
+        versionName "2.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -20,6 +21,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -49,6 +51,8 @@ dependencies {
     implementation libs.androidx.fragment
     implementation libs.androidx.activity
     implementation libs.androidx.viewpager2
+    implementation "androidx.appfunctions:appfunctions:1.0.0-alpha10"
+    ksp "androidx.appfunctions:appfunctions-compiler:1.0.0-alpha10"
 
     testImplementation libs.junit
 }
