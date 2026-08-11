@@ -2,7 +2,9 @@ package com.timely.msminutes
 
 import com.timely.msminutes.data.Alarm
 import com.timely.msminutes.util.AlarmTimeUtil
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.Calendar
 
