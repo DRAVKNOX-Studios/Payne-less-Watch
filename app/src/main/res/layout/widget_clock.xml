@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- The entire widget is now rendered into this ImageView -->
+    <ImageView
+        android:id="@+id/widget_background_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <!-- Transparent click targets for deep linking -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <!-- Time area (central click target for main app) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/alarm_container"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/timer_container"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
+
+                <FrameLayout
+                    android:id="@+id/stopwatch_container"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <!-- Date area (click target for calendar/main) -->
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="32dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Legacy/Hidden buttons for functionality -->
+    <ImageView android:id="@+id/widget_btn_add" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <ImageView android:id="@+id/widget_btn_add_bg" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+
+</FrameLayout>

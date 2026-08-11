@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="250dp"
+    android:height="94dp"
+    android:viewportWidth="250"
+    android:viewportHeight="94">
+    <!-- Background mimicking @drawable/widget_background -->
+    <path
+        android:fillColor="#FDFDFD"
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="1"
+        android:pathData="M8,0.5h234c4.1,0 7.5,3.4 7.5,7.5v78c0,4.1 -3.4,7.5 -7.5,7.5h-234c-4.1,0 -7.5,-3.4 -7.5,-7.5v-78c0,-4.1 3.4,-7.5 7.5,-7.5z" />
+
+    <!-- Clock digits placeholders (mimicking 10:45) -->
+    <!-- '1' -->
+    <path android:fillColor="#424242" android:pathData="M60,25h6v44h-6z" />
+    <!-- '0' -->
+    <path android:fillColor="#424242" android:pathData="M78,25h20v44h-20v-44zM84,31v32h8v-32h-8z" />
+    <!-- ':' -->
+    <path android:fillColor="#424242" android:pathData="M123,40h4v4h-4zM123,54h4v4h-4z" />
+    <!-- '4' -->
+    <path android:fillColor="#424242" android:pathData="M164,25h6v44h-6v-18h-24v-6l18,-20h6z" />
+    <!-- '5' -->
+    <path android:fillColor="#424242" android:pathData="M180,25h24v6h-18v12h18v26h-24v-6h18v-14h-18v-24z" />
+
+    <!-- Bottom status bar placeholders -->
+    <!-- Alarm icon -->
+    <path android:fillColor="#9E9E9E" android:pathData="M15,78a5,5 0 1,1 10,0a5,5 0 1,1 -10,0" />
+    <!-- Alarm text -->
+    <path android:fillColor="#9E9E9E" android:pathData="M30,81h50v4h-50z" />
+    <!-- Date text -->
+    <path android:fillColor="#9E9E9E" android:pathData="M170,81h65v4h-65z" />
+</vector>
