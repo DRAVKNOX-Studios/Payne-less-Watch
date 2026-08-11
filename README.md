@@ -3,7 +3,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/DRAVKNOX-Studios/payne-less-watch)
 ![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen)
 
-# Payne-less : Watch v1.0.0
+# Payne-less : Watch v2.0.0
 
 Package: com.timely.msminutes (codename "timely")
 
@@ -12,7 +12,7 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 
 ## Features
 
-- Lightweight, 2MB post install, 25-30MB avg. RAM usage, peaks at 50-60MB, uses 10-20MB when left to run in background/cached.  (depending on OS version & Hardware, measured via PSS)
+- Lightweight, 2MB post install, 25-30MB avg. RAM usage, peaks at ~45MB, uses ~15MB when left to run in background/cached.  (depending on OS version & Hardware, measured via PSS)
 - Customizable Background, Accent and Font colors
 - Switch between 12 hour and 24 hours formats
 - Label and add a note to Alarms and Timers
@@ -21,7 +21,8 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 - Customizable ringtones for Alarms and Timers
 - Power button action selection for Alarms
 - Swipe right <sub>(like it is a Tinder profile)</sub> to delete Alarm/Timer
-- Full screen Alarm ring with Googly eyes that stare at your soul and wake you up in Morning
+- Swipe left to Duplicate an Alarm, useful if you want to reuse the same settings but different timings.
+- Full screen Alarm ring with Googly eyes that stare at your soul to wake you up in the Morning
 - Vibrator
 - Registers directly with the AlarmManager to ensure no background RAM or battery usage <sub>(may require disabling battery optimizations for this app on some OEM skin though)</sub>
 - Uses base Android components, including AppCompat, no Material based UI crap
@@ -33,7 +34,7 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 2.  **Build it:** If you're a dev, just open this in Android Studio and hit Run. It needs Android 8.0 or newer.
 3.  **Setup:** Open the app once it's installed. Allow the app to send notifications <sub>and remind you're late again.</sub> 
 4.  **Customize it:** The app defaults to system settings, for displaying time and theme, change it how you like!
-5.  **Widget:** Add the widget to your home screen, leave a note for self, and get a glance of the upcoming alarm, next timer to run out or the stopwatch that's running.
+5.  **Widget:** Add the widget to your home screen, leave a note for self, and get a glance of the upcoming alarm, next timer to run out or the stopwatch that's running. <sub>(please for Kang's sake open the app before adding this widget, or it will not load)</sub>
 
 ## Screenshots
 
@@ -45,6 +46,11 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 </td>
 
 <td align="center">
+<img src="screenshots/TimerSet.png" width="180"><br>
+<b>Setting up a timer</b>
+</td>
+
+<td align="center">
 <img src="screenshots/Timer.png" width="180"><br>
 <b>Timer</b>
 </td>
@@ -53,14 +59,14 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 <img src="screenshots/Stopwatch.png" width="180"><br>
 <b>Stopwatch</b>
 </td>
+</tr>
 
+<tr>
 <td align="center">
 <img src="screenshots/WorldClock.png" width="180"><br>
 <b>World Clock</b>
 </td>
-</tr>
 
-<tr>
 <td align="center">
 <img src="screenshots/Settings.png" width="180"><br>
 <b>Settings</b>
@@ -125,7 +131,7 @@ Payne-less: Watch:
 
 ## For Developers
 
-This project is written in Kotlin with XML for views.
+This project is written in Kotlin with Canvas-based Rendering for views <sub><sub>(not the social media ones).</sub></sub>
 Only basic Android libraries are used throughout, no Material, no Proprietary or Google only libraries.
 
 ### Reproducible Builds

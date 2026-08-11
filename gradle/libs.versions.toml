@@ -2,16 +2,18 @@
 # F-Droid and reproducible builds rely on exact version pins here.
 [versions]
 agp                = "9.2.1"
-gradle = "9.2.1"
+gradle = "9.3.1"
 kotlin             = "2.4.0"
 coreKtx            = "1.19.0"
 appcompat          = "1.7.1"
-kotlinGradlePlugin = "2.1.21"
+kotlinGradlePlugin = "2.2.10"
 kotlinStdlibJdk8 = "2.2.10"
 recyclerview       = "1.4.0"
 fragment           = "1.8.9"
 activity           = "1.13.0"
 viewpager2         = "1.1.0"
+appfunctions      = "1.0.0-alpha08"
+ksp               = "2.1.0-1.0.29"
 junit              = "4.13.2"
 
 [libraries]
@@ -21,6 +23,9 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview",    vers
 androidx-fragment  = { module = "androidx.fragment:fragment",               version.ref = "fragment"    }
 androidx-activity  = { module = "androidx.activity:activity",               version.ref = "activity"    }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2",          version.ref = "viewpager2"  }
+androidx-appfunctions = { module = "androidx.appfunctions:appfunctions", version.ref = "appfunctions" }
+androidx-appfunctions-compiler = { module = "androidx.appfunctions:appfunctions-compiler", version.ref = "appfunctions" }
+ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 junit              = { module = "junit:junit",                               version.ref = "junit"       }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }

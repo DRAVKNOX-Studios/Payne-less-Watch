@@ -8,9 +8,10 @@ buildscript {
         // Update both here AND in gradle/libs.versions.toml in lockstep.
         classpath libs.gradle
         classpath libs.kotlin.gradle.plugin
+        classpath libs.ksp.gradle.plugin
     }
 }
 
 tasks.register('clean', Delete) {
-    delete rootProject
+    delete rootProject.layout.buildDirectory
 }
