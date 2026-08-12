@@ -12,7 +12,7 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 
 ## Features
 
-- Lightweight, 2MB post install, 25-30MB avg. RAM usage, peaks at ~45MB, uses ~15MB when left to run in background/cached.  (depending on OS version & Hardware, measured via PSS)
+- Lightweight, 3MB post install, 25-30MB avg. RAM usage, peaks at ~45MB, uses ~15MB when left to run in background/cached.  (depending on OS version & Hardware, measured via PSS)
 - Customizable Background, Accent and Font colors
 - Switch between 12 hour and 24 hours formats
 - Label and add a note to Alarms and Timers
