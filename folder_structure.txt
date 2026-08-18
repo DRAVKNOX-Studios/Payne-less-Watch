@@ -51,6 +51,7 @@ Payne-less-Watch
 │   │   │   │               │   │   │   ├── AlarmItemRenderer.kt
 │   │   │   │               │   │   │   ├── BaseRenderers.kt
 │   │   │   │               │   │   │   ├── ButtonItemRenderer.kt
+│   │   │   │               │   │   │   ├── CommonRenderers.kt
 │   │   │   │               │   │   │   ├── DayToggleRenderer.kt
 │   │   │   │               │   │   │   ├── DurationPickerItemRenderer.kt
 │   │   │   │               │   │   │   ├── InlineEditItemRenderer.kt
