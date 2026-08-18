@@ -16,7 +16,7 @@ class CanvasListView(
     val d = context.resources.displayMetrics.density
 
     override val bounds = RectF()
-    private val scroller = OverScroller(context).apply { setFriction(0.005f) }
+    private val scroller = OverScroller(context).apply { setFriction(0.002f) }
     private val scrollListeners = mutableListOf<(Float) -> Unit>()
     internal var scrollY = 0f
         set(value) {
@@ -85,11 +85,18 @@ class CanvasListView(
             host.postInvalidateOnAnimation()
         }
         val drawingWidth = bounds.width()
+        val viewportHeight = bounds.height()
         canvas.save()
         canvas.clipRect(bounds)
         canvas.translate(bounds.left, bounds.top - scrollY)
-        for (item in items) {
-            if (item.top + item.height >= scrollY && item.top <= scrollY + bounds.height()) {
+
+        // Optimized drawing: Binary search for the first visible item
+        val startIndex = findFirstVisibleItemIndex(scrollY)
+        if (startIndex != -1) {
+            for (i in startIndex until items.size) {
+                val item = items[i]
+                if (item.top > scrollY + viewportHeight) break
+                
                 canvas.save()
                 canvas.translate(item.left, item.top)
                 if (item.swipeX != 0f) item.drawBackground(canvas, tokens, drawingWidth)
@@ -99,6 +106,25 @@ class CanvasListView(
             }
         }
         canvas.restore()
+    }
+
+    private fun findFirstVisibleItemIndex(scrollY: Float): Int {
+        if (items.isEmpty()) return -1
+        var low = 0
+        var high = items.size - 1
+        var result = -1
+
+        while (low <= high) {
+            val mid = (low + high) / 2
+            val item = items[mid]
+            if (item.top + item.height >= scrollY) {
+                result = mid
+                high = mid - 1
+            } else {
+                low = mid + 1
+            }
+        }
+        return result
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

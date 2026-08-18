@@ -28,6 +28,7 @@ class WorldClockItemRenderer(
     override val isSwipeable: Boolean = true
 
     private val cardRect = RectF()
+    private val deleteColor = Color.parseColor("#E53935")
 
     override fun drawBackground(canvas: Canvas, tokens: ThemeTokens, width: Float) {
         if (swipeX > 0f) {
@@ -39,7 +40,7 @@ class WorldClockItemRenderer(
             val hMargin = 14f * density
             cardRect.set(hMargin, 8f * density, width - hMargin, height - 8f * density)
             
-            bgPaint.color = Color.parseColor("#E53935")
+            bgPaint.color = deleteColor
             canvas.drawRoundRect(cardRect, r, r, bgPaint)
             
             subTextPaint.color = Color.WHITE

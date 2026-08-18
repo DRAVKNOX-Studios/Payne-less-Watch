@@ -57,7 +57,13 @@ internal fun WidgetRenderer.drawTime(
         }
         // More spacing for soft glows
         val charSpacing = size * 0.12f
-        return w + (charSpacing * (timeStr.length - 1))
+        var total = w + (charSpacing * (timeStr.length - 1))
+        
+        if (!is24h) {
+            amPmPaint.textSize = Math.min(14f * density, size * 0.25f)
+            total += amPmPaint.measureText("PM") + 8f * density
+        }
+        return total
     }
     
     var totalW = calculateTotalWidth(finalSize)
@@ -65,8 +71,18 @@ internal fun WidgetRenderer.drawTime(
         finalSize *= (availableWidth / totalW)
         totalW = calculateTotalWidth(finalSize)
     }
-
+    
+    // Recalculate time-only width for centering the main clock part
+    timePaint.textSize = finalSize
+    var timeOnlyW = 0f
+    for (char in timeStr) {
+        val isEye = isEasterEggTime && char == '0'
+        timePaint.textScaleX = if (isEye) 1.05f else 1.0f
+        timeOnlyW += timePaint.measureText(char.toString())
+    }
     val spacing = finalSize * 0.12f
+    timeOnlyW += (spacing * (timeStr.length - 1))
+
     // Center vertically between topPadding and bottomLimit
     val timeY = topPadding + (bottomLimit - topPadding) / 2f + (finalSize * 0.38f)
     var currentX = bgRect.left + (bgRect.width() - totalW) / 2f
@@ -133,7 +149,7 @@ internal fun WidgetRenderer.drawTime(
                 clearShadowLayer()
             }
         }
-        canvas.drawText(amPm, bgRect.left + (bgRect.width() + totalW) / 2f + 4f * density, timeY - (finalSize * 0.1f), amPmPaint)
+        canvas.drawText(amPm, currentX + 2f * density, timeY - (finalSize * 0.1f), amPmPaint)
     }
 }
 

@@ -51,7 +51,8 @@ class CanvasListTouchHandler(
         override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             if (isHorizontalLock) return true
             if (!isVerticalLock) return false
-            scroller.fling(0, listView.scrollY.toInt(), 0, (-velocityY * 1.5f).toInt(), 0, 0, 0, listView.maxScroll().toInt())
+            // Use a slight multiplier for a snappier feel
+            scroller.fling(0, listView.scrollY.toInt(), 0, (-velocityY * 1.25f).toInt(), 0, 0, 0, listView.maxScroll().toInt())
             host.invalidate()
             return true
         }
@@ -148,10 +149,10 @@ class CanvasListTouchHandler(
                 val dy = event.y - swipeDownY
                 val absDx = abs(dx)
                 val absDy = abs(dy)
-                val dist = sqrt(dx * dx + dy * dy)
+                val distSq = dx * dx + dy * dy
 
-                if (!isHorizontalLock && !isVerticalLock && dist > touchSlop) {
-                    if (absDx >= absDy) {
+                if (!isHorizontalLock && !isVerticalLock && distSq > (touchSlop * 0.8f) * (touchSlop * 0.8f)) {
+                    if (absDx >= absDy * 1.1f) {
                         isHorizontalLock = true
                         wasHorizontalSwipe = true
                         swipeLockX = event.x
@@ -169,7 +170,7 @@ class CanvasListTouchHandler(
                             isHorizontalLock = false
                             wasHorizontalSwipe = false
                         }
-                    } else if (absDy > absDx * 1.5f) {
+                    } else if (absDy > absDx * 1.2f) {
                         isVerticalLock = true
                     }
                 }

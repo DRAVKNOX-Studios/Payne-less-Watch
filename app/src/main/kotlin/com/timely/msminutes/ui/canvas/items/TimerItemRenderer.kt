@@ -33,6 +33,7 @@ class TimerItemRenderer(
     private val pauseBounds = RectF()
     private val resetBounds = RectF()
     private val playPath = Path()
+    private val deleteColor = Color.parseColor("#E53935")
 
     override fun drawBackground(canvas: Canvas, tokens: ThemeTokens, width: Float) {
         if (swipeX > 0f) {
@@ -43,7 +44,7 @@ class TimerItemRenderer(
             val r = 24f * density
             val hMargin = 14f * density
             cardRect.set(hMargin, 8f * density, width - hMargin, height - 8f * density)
-            bgPaint.color = Color.parseColor("#E53935")
+            bgPaint.color = deleteColor
             canvas.drawRoundRect(cardRect, r, r, bgPaint)
             subTextPaint.color = Color.WHITE
             subTextPaint.typeface = Typeface.DEFAULT_BOLD
@@ -98,7 +99,7 @@ class TimerItemRenderer(
                        (item.state == TimerItem.STATE_RUNNING && displayMillis <= 0)
 
         if (item.state == TimerItem.STATE_RUNNING || isRinging) {
-            accentLinePaint.color = if (isRinging) Color.parseColor("#E53935") else tokens.accent
+            accentLinePaint.color = if (isRinging) deleteColor else tokens.accent
             val stripWidth = 4f * density
             val stripX = hMargin + 12f * density
             canvas.drawRoundRect(stripX, cardRect.top + 20f * density, stripX + stripWidth, cardRect.bottom - 20f * density, stripWidth/2, stripWidth/2, accentLinePaint)
@@ -107,7 +108,7 @@ class TimerItemRenderer(
         val paddingX = hMargin + 22f * density
 
         // 3. Draw Time
-        timePaint.color = if (isRinging) Color.parseColor("#E53935") else tokens.textPrimary
+        timePaint.color = if (isRinging) deleteColor else tokens.textPrimary
         timePaint.textSize = 46f * density
         val timeStr = TimeFormatUtil.formatTimer(displayMillis)
         canvas.drawText(timeStr, paddingX, 68f * density, timePaint)
@@ -135,7 +136,7 @@ class TimerItemRenderer(
         pauseBounds.set(width - hMargin - 56f * density, 25f * density, width - hMargin - 16f * density, 65f * density)
         
         if (isRinging) {
-            bgPaint.color = Color.parseColor("#E53935") // Red for End/Stop
+            bgPaint.color = deleteColor // Red for End/Stop
         } else {
             bgPaint.color = tokens.accent
         }

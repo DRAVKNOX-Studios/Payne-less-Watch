@@ -31,8 +31,8 @@ class CanvasListSwipeHandler(
             return
         }
         val animator = ValueAnimator.ofFloat(startX, 0f).apply {
-            duration = 220
-            interpolator = DecelerateInterpolator(2f)
+            duration = 250
+            interpolator = DecelerateInterpolator(1.5f)
             addUpdateListener {
                 val v = it.animatedValue as Float
                 swipeStates[itemId] = v
@@ -64,8 +64,8 @@ class CanvasListSwipeHandler(
         val startX = swipeStates.getOrDefault(itemId, item.swipeX)
         val endX = if (item.width > 0) item.width else listView.bounds.width()
         val animator = ValueAnimator.ofFloat(startX, endX).apply {
-            duration = 180
-            interpolator = AccelerateInterpolator(1.5f)
+            duration = 200
+            interpolator = AccelerateInterpolator(1.2f)
             addUpdateListener {
                 val v = it.animatedValue as Float
                 swipeStates[itemId] = v
