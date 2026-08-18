@@ -1,4 +1,15 @@
-timely
+Payne-less-Watch
+├── .github
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   ├── config.yml
+│   │   └── feature_request.md
+│   ├── workflows
+│   │   ├── android.yml
+│   │   ├── folder-structure.yml
+│   │   ├── gradle.yml
+│   │   └── release.yml
+│   └── PULL_REQUEST_TEMPLATE.md
 ├── app
 │   ├── src
 │   │   ├── main
@@ -139,8 +150,7 @@ timely
 │       └── android
 │           └── en-US
 │               ├── changelogs
-│               │   ├── 100.txt
-│               │   └── 200.txt
+│               │   └── 100.txt
 │               ├── full_description.txt
 │               ├── short_description.txt
 │               └── title.txt
@@ -161,7 +171,6 @@ timely
 │   └── WorldClock.png
 ├── tools
 │   └── gen_tree.py
-├── .gitignore
 ├── build.gradle
 ├── code_docs.md
 ├── CONTRIBUTING.md
@@ -170,6 +179,5 @@ timely
 ├── gradlew
 ├── gradlew.bat
 ├── LICENSE
-├── local.properties
 ├── README.md
 └── settings.gradle
