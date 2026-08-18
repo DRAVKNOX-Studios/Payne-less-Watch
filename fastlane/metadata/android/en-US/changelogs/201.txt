@@ -1,0 +1,4 @@
+Minor Bug fix release (2.0.1).
+• Improved scrolling, less friction.
+• Fixed 12 hour clock version of Widget Clipping the PM/AM on certain display sizes.
+

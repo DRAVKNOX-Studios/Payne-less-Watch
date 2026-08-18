@@ -1,0 +1,9 @@
+Major rework release (2.0.0).
+• Redid UI with Canvas based rendering
+• File size reduction by 1MB
+• RAM usage reduction by up-to 20MB.
+• Add new world clocks, or remove old
+• Improved Home screen clock widget with theme support
+• Swipe right to copy Alarm/Timer
+• Improved Sound Picker
+• Improved stability and performance

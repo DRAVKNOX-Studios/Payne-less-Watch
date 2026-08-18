@@ -6,7 +6,7 @@ Features:
 • Stopwatch - lap tracking with foreground service
 • World Clock - track time across multiple time zones
 • Home screen widget - live clock with next alarm display, fully themeable
-• Full custom theming - choose your own background and accent colours
+• Full custom theming - choose your own background and accent colors
 • Missed alarm notifications with reschedule on boot, timezone change, and app update
 
 Privacy:
