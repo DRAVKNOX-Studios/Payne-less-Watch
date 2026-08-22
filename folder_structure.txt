@@ -78,9 +78,11 @@ Payne-less-Watch
 │   │   │   │               │   │   ├── CanvasRenderer.kt
 │   │   │   │               │   │   ├── CanvasWidgetIcons.kt
 │   │   │   │               │   │   ├── ColorGridRenderer.kt
+│   │   │   │               │   │   ├── ComicBubbleRenderer.kt
 │   │   │   │               │   │   ├── FabRenderer.kt
 │   │   │   │               │   │   ├── GooglyEyesRenderer.kt
 │   │   │   │               │   │   ├── ItemRenderer.kt
+│   │   │   │               │   │   ├── ProceduralBackgroundRenderer.kt
 │   │   │   │               │   │   ├── StopwatchHeaderRenderer.kt
 │   │   │   │               │   │   ├── TabBarRenderer.kt
 │   │   │   │               │   │   ├── TextRenderer.kt
@@ -110,6 +112,7 @@ Payne-less-Watch
 │   │   │   │               │   ├── AppExecutors.kt
 │   │   │   │               │   ├── NotificationChannels.kt
 │   │   │   │               │   ├── PowerButtonState.kt
+│   │   │   │               │   ├── RefreshRateOptimizer.kt
 │   │   │   │               │   ├── RingPlayer.kt
 │   │   │   │               │   ├── SharedDrawablePool.kt
 │   │   │   │               │   ├── ThemeApplier.kt
@@ -118,6 +121,7 @@ Payne-less-Watch
 │   │   │   │               │   ├── ThemeUtil.kt
 │   │   │   │               │   ├── TimeFormatUtil.kt
 │   │   │   │               │   ├── TimerScheduler.kt
+│   │   │   │               │   ├── TimeZoneUtil.kt
 │   │   │   │               │   └── WakeLockHolder.kt
 │   │   │   │               ├── view
 │   │   │   │               │   ├── GooglyEyesView.kt
