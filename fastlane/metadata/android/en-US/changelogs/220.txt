@@ -1,0 +1,5 @@
+Minor feature & bug fix release (2.2.0).
+• Improved scrolling, no longer stops at finger leaving the screen.
+• New Floating Pill Navbar
+• Background effects
+• Lively Placeholder Text

@@ -3,7 +3,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/DRAVKNOX-Studios/payne-less-watch)
 ![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen)
 
-# Payne-less : Watch v2.0.1
+# Payne-less : Watch v2.2.0
 
 Package: com.timely.msminutes (codename "timely")
 

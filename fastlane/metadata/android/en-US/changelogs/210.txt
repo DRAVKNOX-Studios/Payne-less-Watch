@@ -1,0 +1,4 @@
+Major Bug fix release (2.1.0).
+• Improve app padding for accounting punch-hole selfie cameras
+• Improved Bottom Navbar to Account for Button Navigation
+• Improved World Clock
