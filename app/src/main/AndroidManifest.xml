@@ -36,7 +36,8 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -65,7 +66,8 @@
         <activity
             android:name=".ui.alarm.AlarmEditActivity"
             android:exported="false"
-            android:label="@string/edit_alarm" />
+            android:label="@string/edit_alarm"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.alarm.AlarmRingActivity"
@@ -79,12 +81,14 @@
         <activity
             android:name=".ui.worldclock.TimeZoneSearchActivity"
             android:exported="false"
-            android:label="Add World Clock" />
+            android:label="Add World Clock"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false"
-            android:label="@string/settings" />
+            android:label="@string/settings"
+            android:windowSoftInputMode="adjustResize" />
 
         <receiver android:name=".receiver.AlarmReceiver" android:exported="false" />
         <receiver android:name=".receiver.TimerReceiver" android:exported="false" />

@@ -5,7 +5,5 @@
         <item name="colorPrimaryDark">#3D7CFF</item>
         <item name="colorAccent">#5C93FF</item>
         <item name="android:windowBackground">#121316</item>
-        <item name="android:statusBarColor">#121316</item>
-        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
