@@ -1,4 +1,15 @@
-timely
+Payne-less-Watch
+├── .github
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   ├── config.yml
+│   │   └── feature_request.md
+│   ├── workflows
+│   │   ├── android.yml
+│   │   ├── folder-structure.yml
+│   │   ├── gradle.yml
+│   │   └── release.yml
+│   └── PULL_REQUEST_TEMPLATE.md
 ├── app
 │   ├── src
 │   │   ├── main
@@ -40,6 +51,7 @@ timely
 │   │   │   │               │   │   │   ├── AlarmItemRenderer.kt
 │   │   │   │               │   │   │   ├── BaseRenderers.kt
 │   │   │   │               │   │   │   ├── ButtonItemRenderer.kt
+│   │   │   │               │   │   │   ├── CommonRenderers.kt
 │   │   │   │               │   │   │   ├── DayToggleRenderer.kt
 │   │   │   │               │   │   │   ├── DurationPickerItemRenderer.kt
 │   │   │   │               │   │   │   ├── InlineEditItemRenderer.kt
@@ -140,7 +152,10 @@ timely
 │           └── en-US
 │               ├── changelogs
 │               │   ├── 100.txt
-│               │   └── 200.txt
+│               │   ├── 200.txt
+│               │   ├── 201.txt
+│               │   ├── 210.txt
+│               │   └── 220.txt
 │               ├── full_description.txt
 │               ├── short_description.txt
 │               └── title.txt
@@ -161,7 +176,6 @@ timely
 │   └── WorldClock.png
 ├── tools
 │   └── gen_tree.py
-├── .gitignore
 ├── build.gradle
 ├── code_docs.md
 ├── CONTRIBUTING.md
@@ -170,6 +184,5 @@ timely
 ├── gradlew
 ├── gradlew.bat
 ├── LICENSE
-├── local.properties
 ├── README.md
 └── settings.gradle
