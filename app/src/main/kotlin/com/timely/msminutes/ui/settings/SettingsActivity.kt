@@ -19,6 +19,7 @@ import com.timely.msminutes.ui.canvas.items.SelectorItemRenderer
 import com.timely.msminutes.ui.canvas.items.SoundItemRenderer
 import com.timely.msminutes.ui.canvas.items.ToggleItemRenderer
 import com.timely.msminutes.ui.view.CustomColorPickerDialog
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
@@ -34,6 +35,7 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        RefreshRateOptimizer.optimize(window)
         prefs = Prefs(this)
 
         val root = FrameLayout(this)
@@ -51,7 +53,7 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
         hostView.addRenderer(listView)
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             val w = root.width.toFloat()
             val h = root.height.toFloat()
             if (w > 0 && h > 0) {
@@ -184,7 +186,7 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
 
     override fun onThemeChanged(t: ThemeTokens?) {
         if (t == null) return
-        ThemeApplier.applyWindow(window, t)
+        ThemeApplier.applyWindow(this, t)
         val root = findViewById<android.view.View>(android.R.id.content)
         root?.setBackgroundColor(t.background)
         hostView.invalidate()

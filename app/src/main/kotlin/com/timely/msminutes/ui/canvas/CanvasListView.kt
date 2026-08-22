@@ -16,7 +16,7 @@ class CanvasListView(
     val d = context.resources.displayMetrics.density
 
     override val bounds = RectF()
-    private val scroller = OverScroller(context).apply { setFriction(0.002f) }
+    private val scroller = OverScroller(context).apply { setFriction(0.005f) }
     private val scrollListeners = mutableListOf<(Float) -> Unit>()
     internal var scrollY = 0f
         set(value) {
@@ -29,6 +29,10 @@ class CanvasListView(
 
     internal val items = mutableListOf<ItemRenderer>()
     private val touchHandler = CanvasListTouchHandler(context, host, this, scroller)
+
+    init {
+        onEmptyChange(true)
+    }
 
     fun setItems(newItems: List<ItemRenderer>) {
         if (items.size == newItems.size) {
@@ -74,7 +78,8 @@ class CanvasListView(
 
     internal fun maxScroll(): Float {
         val totalHeight = items.lastOrNull()?.let { it.top + it.height } ?: 0f
-        return (totalHeight - bounds.height() + 100f).coerceAtLeast(0f)
+        // Add extra padding at the bottom (120dp) to allow scrolling past the floating pill
+        return (totalHeight - bounds.height() + 120f * d).coerceAtLeast(0f)
     }
 
     fun getContentHeight(): Float = items.lastOrNull()?.let { it.top + it.height } ?: 0f

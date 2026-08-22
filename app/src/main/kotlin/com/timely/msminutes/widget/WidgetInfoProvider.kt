@@ -34,7 +34,7 @@ object WidgetInfoProvider {
         val timers = timerRepo.all
         var activeTimer: TimerItem? = null
         for (t in timers) {
-            if (t != null && t.state == TimerItem.STATE_RUNNING) {
+            if (t.state == TimerItem.STATE_RUNNING) {
                 activeTimer = t
                 break
             }

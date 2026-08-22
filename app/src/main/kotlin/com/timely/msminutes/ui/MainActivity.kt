@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment
 import com.timely.msminutes.service.StopwatchService
 import com.timely.msminutes.ui.alarm.AlarmEditActivity
 import com.timely.msminutes.ui.canvas.CanvasHostView
-import com.timely.msminutes.ui.canvas.FabRenderer
 import com.timely.msminutes.ui.canvas.TabBarRenderer
 import com.timely.msminutes.ui.canvas.ToolbarRenderer
 import com.timely.msminutes.ui.canvas.UndoBarRenderer
 import com.timely.msminutes.ui.settings.SettingsActivity
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
@@ -30,19 +30,25 @@ class MainActivity : AppCompatActivity(), ThemeListener {
     private lateinit var root: FrameLayout
     private lateinit var fragmentContainerView: FrameLayout
     private lateinit var hostView: CanvasHostView
+    private lateinit var backgroundHostView: CanvasHostView
     
     private lateinit var toolbarRenderer: ToolbarRenderer
     private lateinit var tabBarRenderer: TabBarRenderer
-    private lateinit var fabRenderer: FabRenderer
     private lateinit var undoRenderer: UndoBarRenderer
+    private lateinit var backgroundRenderer: com.timely.msminutes.ui.canvas.ProceduralBackgroundRenderer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        RefreshRateOptimizer.optimize(window)
         
         root = FrameLayout(this)
         ThemeStore.get().current()?.let { root.setBackgroundColor(it.background) }
         setContentView(root)
+
+        backgroundHostView = CanvasHostView(this)
+        backgroundHostView.drawBackground = false
+        root.addView(backgroundHostView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
 
         fragmentContainerView = FrameLayout(this).apply {
             id = android.view.View.generateViewId()
@@ -59,11 +65,12 @@ class MainActivity : AppCompatActivity(), ThemeListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
+        backgroundRenderer = com.timely.msminutes.ui.canvas.ProceduralBackgroundRenderer(this)
+
         tabBarRenderer = TabBarRenderer(this) { position ->
             showFragment(position)
         }
-
-        fabRenderer = FabRenderer(this) {
+        tabBarRenderer.onAddClick = {
             if (currentPosition == 0) {
                 startActivity(Intent(this, AlarmEditActivity::class.java))
             } else if (currentPosition == 1) {
@@ -76,9 +83,9 @@ class MainActivity : AppCompatActivity(), ThemeListener {
 
         undoRenderer = UndoBarRenderer(this) { }
 
+        backgroundHostView.addRenderer(backgroundRenderer)
         hostView.addRenderer(toolbarRenderer)
         hostView.addRenderer(tabBarRenderer)
-        hostView.addRenderer(fabRenderer)
         hostView.addRenderer(undoRenderer)
         
         MainActivityPermissionHelper.requestNotificationPermission(this)
@@ -96,7 +103,7 @@ class MainActivity : AppCompatActivity(), ThemeListener {
         super.onPostCreate(savedInstanceState)
         
         ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             val w = root.width.toFloat()
             val h = root.height.toFloat()
             
@@ -104,28 +111,39 @@ class MainActivity : AppCompatActivity(), ThemeListener {
                 val d = resources.displayMetrics.density
                 val toolbarH = 56f * d
                 val tabBarH = 64f * d
-                val fabSize = 56f * d
                 
                 // Toolbar at the top, offset by status bar
                 toolbarRenderer.onLayout(0f, systemBars.top.toFloat(), w, systemBars.top.toFloat() + toolbarH)
                 
-                // TabBar at the bottom, offset by navigation bar
-                tabBarRenderer.onLayout(0f, h - systemBars.bottom.toFloat() - tabBarH, w, h - systemBars.bottom.toFloat())
+                // TabBar as a floating pill at the bottom
+                val maxTabBarWidth = 600f * d
+                // Reduce side margins on smaller screens to prevent cramping
+                val sideMargin = if (w < 600f * d) 16f * d else 48f * d
+                val targetTabBarWidth = Math.min(w - sideMargin * 2f, maxTabBarWidth)
+                val tabBarLeft = (w - targetTabBarWidth) / 2f
+                val tabBarRight = tabBarLeft + targetTabBarWidth
+                val tabBarMarginBottom = 16f * d
+                val tabBarBottom = h - systemBars.bottom.toFloat() - tabBarMarginBottom
+                val tabBarTop = tabBarBottom - tabBarH
                 
-                val fabMargin = 16f * d
-                val fabBottom = h - systemBars.bottom.toFloat() - tabBarH - fabMargin
-                fabRenderer.onLayout(w - fabSize - fabMargin, fabBottom - fabSize, w - fabMargin, fabBottom)
+                tabBarRenderer.onLayout(tabBarLeft, tabBarTop, tabBarRight, tabBarBottom)
                 
                 val undoH = 56f * d
                 val undoMargin = 16f * d
-                val undoBottom = h - systemBars.bottom.toFloat() - tabBarH - undoMargin
+                val undoBottom = tabBarTop - undoMargin
                 undoRenderer.onLayout(undoMargin, undoBottom - undoH, w - undoMargin, undoBottom)
+
+                backgroundRenderer.onLayout(0f, 0f, w, h)
+                backgroundHostView.invalidate()
                 
                 // Adjust fragment container margin to fit between toolbar and tabbar
                 val params = fragmentContainerView.layoutParams as FrameLayout.LayoutParams
                 params.topMargin = (systemBars.top.toFloat() + toolbarH).toInt()
-                params.bottomMargin = (systemBars.bottom.toFloat() + tabBarH).toInt()
+                params.bottomMargin = 0 // Full height to avoid black strip behind floating pill
                 fragmentContainerView.layoutParams = params
+                
+                // Remove padding that was shrinking the child view, let ListView handle its own bottom padding
+                fragmentContainerView.setPadding(0, 0, 0, 0)
                 
                 hostView.invalidate()
             }
@@ -158,7 +176,7 @@ class MainActivity : AppCompatActivity(), ThemeListener {
     }
 
     private fun updateSharedViewsVisibility(position: Int) {
-        fabRenderer.isVisible = (position == 0 || position == 1 || position == 3)
+        tabBarRenderer.showAddButton = (position == 0 || position == 1 || position == 3)
         if (position != 0 && position != 1 && position != 3) {
             undoRenderer.isVisible = false
         }
@@ -176,8 +194,9 @@ class MainActivity : AppCompatActivity(), ThemeListener {
 
     override fun onThemeChanged(t: ThemeTokens?) {
         if (t == null) return
-        ThemeApplier.applyWindow(window, t)
+        ThemeApplier.applyWindow(this, t)
         root.setBackgroundColor(t.background)
+        backgroundHostView.invalidate()
         hostView.invalidate()
     }
 

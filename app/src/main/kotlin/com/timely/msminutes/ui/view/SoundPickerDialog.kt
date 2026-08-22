@@ -19,6 +19,7 @@ import com.timely.msminutes.ui.canvas.items.HeaderItemRenderer
 import com.timely.msminutes.ui.canvas.items.SearchItemRenderer
 import com.timely.msminutes.ui.canvas.items.SoundItemRenderer
 import com.timely.msminutes.util.AppExecutors
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeStore
 import java.util.Locale
 
@@ -93,6 +94,7 @@ class SoundPickerDialog(
         }
 
         loadSounds()
+        window?.let { RefreshRateOptimizer.optimize(it) }
     }
 
     fun loadSounds() {

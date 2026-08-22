@@ -3,7 +3,6 @@ package com.timely.msminutes.ui.canvas.items
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.util.ThemeTokens
 
 class LapItemRenderer(

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.OverScroller
 import kotlin.math.abs
-import kotlin.math.sqrt
 
 class CanvasListTouchHandler(
     private val context: Context,
@@ -40,7 +39,7 @@ class CanvasListTouchHandler(
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             if (isHorizontalLock || touchHandledByItem != null) return false
             if (isVerticalLock) {
-                listView.scrollY += distanceY
+                listView.scrollY += distanceY * 1.1f
                 listView.clampScroll()
                 host.invalidate()
                 return true
@@ -52,7 +51,7 @@ class CanvasListTouchHandler(
             if (isHorizontalLock) return true
             if (!isVerticalLock) return false
             // Use a slight multiplier for a snappier feel
-            scroller.fling(0, listView.scrollY.toInt(), 0, (-velocityY * 1.25f).toInt(), 0, 0, 0, listView.maxScroll().toInt())
+            scroller.fling(0, listView.scrollY.toInt(), 0, (-velocityY * 1.4f).toInt(), 0, 0, 0, listView.maxScroll().toInt())
             host.invalidate()
             return true
         }
@@ -170,8 +169,9 @@ class CanvasListTouchHandler(
                             isHorizontalLock = false
                             wasHorizontalSwipe = false
                         }
-                    } else if (absDy > absDx * 1.2f) {
+                } else if (absDy > absDx * 1.2f) {
                         isVerticalLock = true
+                        host.parent?.requestDisallowInterceptTouchEvent(true)
                     }
                 }
 
@@ -192,6 +192,7 @@ class CanvasListTouchHandler(
             }
 
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                gestureDetector.onTouchEvent(event)
                 touchHandledByItem = null
 
                 var swipeVelocityX = 0f
@@ -211,7 +212,6 @@ class CanvasListTouchHandler(
                     isHorizontalLock = false
                     isVerticalLock = false
                     swipeHandler.activeSwipedItemId = null
-                    gestureDetector.onTouchEvent(event)
                     return true
                 }
 
@@ -274,7 +274,6 @@ class CanvasListTouchHandler(
                 isHorizontalLock = false
                 isVerticalLock = false
                 swipeHandler.activeSwipedItemId = null
-                gestureDetector.onTouchEvent(event)
                 host.invalidate()
                 return true
             }

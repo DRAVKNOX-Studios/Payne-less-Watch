@@ -43,6 +43,7 @@ class StopwatchFragment : Fragment(), ThemeListener {
         savedInstanceState: Bundle?
     ): View {
         hostView = CanvasHostView(requireContext())
+        hostView.drawBackground = false
         headerRenderer = StopwatchHeaderRenderer(
             requireContext(),
             onStartPause = { if (prefs?.isStopwatchRunning == true) pause() else start() },

@@ -4,11 +4,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.WindowCompat
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.core.widget.TextViewCompat
 
 object ThemeApplier {
@@ -135,16 +136,19 @@ object ThemeApplier {
         ThemeUtil.tintWidget(cb, t.accent, t.background)
     }
 
-    fun applyWindow(window: Window, t: ThemeTokens) {
-        if (Build.VERSION.SDK_INT < 35) {
-            @Suppress("DEPRECATION")
-            window.statusBarColor = t.background
-            @Suppress("DEPRECATION")
-            window.navigationBarColor = t.background
+    fun applyWindow(activity: ComponentActivity, t: ThemeTokens) {
+        val isLight = isLight(t.background)
+        activity.enableEdgeToEdge(
+            statusBarStyle = if (isLight) SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            else SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = if (isLight) SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            else SystemBarStyle.dark(Color.TRANSPARENT)
+        )
+
+        if (Build.VERSION.SDK_INT >= 35) {
+            activity.window.attributes.layoutInDisplayCutoutMode =
+                android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
-        val ctrl = WindowCompat.getInsetsController(window, window.decorView)
-        ctrl.isAppearanceLightStatusBars     = isLight(t.background)
-        ctrl.isAppearanceLightNavigationBars = isLight(t.background)
     }
 
     fun applyToolbarIcon(icon: ImageView?, t: ThemeTokens) {

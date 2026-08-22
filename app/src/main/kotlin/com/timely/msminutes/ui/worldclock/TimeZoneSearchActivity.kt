@@ -12,9 +12,11 @@ import com.timely.msminutes.ui.canvas.CanvasListView
 import com.timely.msminutes.ui.canvas.ToolbarRenderer
 import com.timely.msminutes.ui.canvas.items.SearchItemRenderer
 import com.timely.msminutes.ui.canvas.items.TimeZoneItemRenderer
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeTokens
+import com.timely.msminutes.util.TimeZoneUtil
 import java.time.ZoneId
 import java.util.Locale
 
@@ -25,18 +27,24 @@ class TimeZoneSearchActivity : AppCompatActivity(), ThemeStore.ThemeListener {
     private lateinit var toolbarRenderer: ToolbarRenderer
     
     private var searchQuery: String = ""
-    private val allZones = ZoneId.getAvailableZoneIds().sorted().map { id ->
-        val parts = id.split("/")
-        TimeZoneItem(
-            id = id,
-            city = parts.last().replace("_", " "),
-            region = if (parts.size > 1) parts.first() else "Other"
-        )
-    }
+    private val allZones = ZoneId.getAvailableZoneIds()
+        .filter { id ->
+            id.contains("/") && !id.startsWith("Etc/") && !id.startsWith("SystemV/") && !id.startsWith("US/") && !id.startsWith("Canada/") && !id.startsWith("Brazil/") && !id.startsWith("Chile/") && !id.startsWith("Mexico/")
+        }
+        .map { id ->
+            TimeZoneItem(
+                id = id,
+                city = TimeZoneUtil.getCityName(id),
+                region = TimeZoneUtil.getCountryName(id)
+            )
+        }
+        .distinctBy { it.city + "|" + it.region }
+        .sortedBy { it.city }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        RefreshRateOptimizer.optimize(window)
         
         val root = FrameLayout(this)
         setContentView(root)
@@ -53,7 +61,7 @@ class TimeZoneSearchActivity : AppCompatActivity(), ThemeStore.ThemeListener {
         hostView.addRenderer(listView)
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             val w = root.width.toFloat()
             val h = root.height.toFloat()
             if (w > 0 && h > 0) {
@@ -115,7 +123,7 @@ class TimeZoneSearchActivity : AppCompatActivity(), ThemeStore.ThemeListener {
 
     override fun onThemeChanged(t: ThemeTokens?) {
         if (t == null) return
-        ThemeApplier.applyWindow(window, t)
+        ThemeApplier.applyWindow(this, t)
         val root = findViewById<android.view.View>(android.R.id.content)
         root?.setBackgroundColor(t.background)
         hostView.invalidate()

@@ -2,7 +2,6 @@ package com.timely.msminutes.ui.canvas.items
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import com.timely.msminutes.util.ThemeTokens

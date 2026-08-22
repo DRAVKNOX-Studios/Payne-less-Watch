@@ -34,7 +34,7 @@ class WheelPickerRenderer(
     private val density = context.resources.displayMetrics.density
     val bounds = RectF()
     private val scroller = OverScroller(context).apply {
-        setFriction(0.002f)
+        setFriction(0.001f)
     }
     private val itemHeight = 48f * density
     private var scrollY = 0f
@@ -58,7 +58,7 @@ class WheelPickerRenderer(
         }
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            scrollY += distanceY * 1.2f
+            scrollY += distanceY * 1.3f
             host.invalidate()
             return true
         }
@@ -66,7 +66,7 @@ class WheelPickerRenderer(
         override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             val minScroll = if (isLooping) Int.MIN_VALUE else 0
             val maxScroll = if (isLooping) Int.MAX_VALUE else ((maxValue - minValue) * itemHeight).toInt()
-            scroller.fling(0, scrollY.toInt(), 0, (-velocityY * 1.65f).toInt(), 0, 0, minScroll, maxScroll)
+            scroller.fling(0, scrollY.toInt(), 0, (-velocityY * 1.8f).toInt(), 0, 0, minScroll, maxScroll)
             host.invalidate()
             return true
         }
@@ -205,7 +205,7 @@ class WheelPickerRenderer(
             et.requestFocus()
             et.post {
                 val imm = host.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
+                imm.showSoftInput(et, 0)
             }
         }
 

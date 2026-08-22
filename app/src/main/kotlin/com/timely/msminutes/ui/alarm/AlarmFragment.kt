@@ -22,7 +22,7 @@ import com.timely.msminutes.widget.WidgetNotifier.notifyUpdate
 class AlarmFragment : Fragment(), ThemeListener {
     private lateinit var hostView: CanvasHostView
     private lateinit var listView: CanvasListView
-    private lateinit var emptyRenderer: com.timely.msminutes.ui.canvas.TextRenderer
+    private lateinit var emptyRenderer: com.timely.msminutes.ui.canvas.ComicBubbleRenderer
     private var repository: AlarmRepository? = null
 
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -38,11 +38,12 @@ class AlarmFragment : Fragment(), ThemeListener {
         savedInstanceState: Bundle?
     ): View {
         hostView = CanvasHostView(requireContext())
+        hostView.drawBackground = false
         hostView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        emptyRenderer = com.timely.msminutes.ui.canvas.TextRenderer(requireContext(), "No alarms yet")
+        emptyRenderer = com.timely.msminutes.ui.canvas.ComicBubbleRenderer(requireContext(), "No alarms yet")
         listView = CanvasListView(requireContext(), hostView) { isEmpty ->
             emptyRenderer.isVisible = isEmpty
             hostView.invalidate()

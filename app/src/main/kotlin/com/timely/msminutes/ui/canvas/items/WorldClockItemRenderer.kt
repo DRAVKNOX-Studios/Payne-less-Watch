@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.util.ThemeTokens
 import com.timely.msminutes.util.TimeFormatUtil
+import com.timely.msminutes.util.TimeZoneUtil
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -84,7 +85,7 @@ class WorldClockItemRenderer(
         textPaint.color = tokens.textPrimary
         textPaint.textSize = 19f * density
         textPaint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        val cityName = timeZoneId.substringAfterLast('/').replace('_', ' ')
+        val cityName = TimeZoneUtil.getCityName(timeZoneId)
         canvas.drawText(cityName, paddingX, 45f * density, textPaint)
 
         // 4. Country/Region & Offset
@@ -93,8 +94,8 @@ class WorldClockItemRenderer(
         subTextPaint.textSize = 13f * density
         val offset = tz.getOffset(System.currentTimeMillis()) / 3600000f
         val offsetStr = "GMT ${if (offset >= 0) "+" else ""}${String.format(Locale.US, "%.1f", offset)}"
-        val region = timeZoneId.substringBeforeLast('/')
-        canvas.drawText("$region • $offsetStr", paddingX, 75f * density, subTextPaint)
+        val country = TimeZoneUtil.getCountryName(timeZoneId)
+        canvas.drawText("$country • $offsetStr", paddingX, 75f * density, subTextPaint)
 
         // 5. Time
         timePaint.color = tokens.textPrimary

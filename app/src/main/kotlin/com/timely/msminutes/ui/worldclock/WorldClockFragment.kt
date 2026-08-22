@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.timely.msminutes.data.Prefs
 import com.timely.msminutes.ui.canvas.CanvasHostView
 import com.timely.msminutes.ui.canvas.CanvasListView
-import com.timely.msminutes.ui.canvas.TextRenderer
 import com.timely.msminutes.ui.canvas.items.WorldClockItemRenderer
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
@@ -21,7 +20,7 @@ class WorldClockFragment : Fragment(), ThemeListener {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var hostView: CanvasHostView
     private lateinit var listView: CanvasListView
-    private lateinit var emptyRenderer: TextRenderer
+    private lateinit var emptyRenderer: com.timely.msminutes.ui.canvas.ComicBubbleRenderer
 
     private val tick = object : Runnable {
         override fun run() {
@@ -36,7 +35,8 @@ class WorldClockFragment : Fragment(), ThemeListener {
         savedInstanceState: Bundle?
     ): View {
         hostView = CanvasHostView(requireContext())
-        emptyRenderer = TextRenderer(requireContext(), "No world clocks")
+        hostView.drawBackground = false
+        emptyRenderer = com.timely.msminutes.ui.canvas.ComicBubbleRenderer(requireContext(), "No world clocks")
         listView = CanvasListView(requireContext(), hostView) { isEmpty ->
             emptyRenderer.isVisible = isEmpty
             hostView.invalidate()

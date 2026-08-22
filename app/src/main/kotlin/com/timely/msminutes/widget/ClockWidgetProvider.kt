@@ -133,13 +133,25 @@ class ClockWidgetProvider : AppWidgetProvider() {
 
             val minWidth  = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
             val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+            val maxWidth  = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
+            val maxHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
 
-            var width  = if (minWidth  > 0) (minWidth  * density).toInt() else (250 * density).toInt()
-            var height = if (minHeight > 0) (minHeight * density).toInt() else (110 * density).toInt()
+            val isPortrait = context.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
+            
+            var widthDp = if (isPortrait) minWidth else maxWidth
+            var heightDp = if (isPortrait) maxHeight else minHeight
+            
+            // Fallbacks if options are missing
+            if (widthDp <= 0) widthDp = 250
+            if (heightDp <= 0) heightDp = 110
+
+            var width  = (widthDp * density).toInt()
+            var height = (heightDp * density).toInt()
 
             var drawDensity = density
-            // 180 000 px * 4 bytes = 720 KB — comfortable headroom under the 1 MB limit.
-            val maxPixels = 180_000
+            // 250 000 px * 4 bytes = 1 MB limit (tight)
+            // Let's stay slightly safer at 200 000 px
+            val maxPixels = 200_000
             if (width * height > maxPixels) {
                 val scale = Math.sqrt(maxPixels.toDouble() / (width * height)).toFloat()
                 width       = (width  * scale).toInt().coerceAtLeast(1)

@@ -27,6 +27,7 @@ import com.timely.msminutes.ui.canvas.items.TimePickerItemRenderer
 import com.timely.msminutes.ui.canvas.items.ToggleItemRenderer
 import com.timely.msminutes.util.AlarmScheduler
 import com.timely.msminutes.util.AlarmTimeUtil
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
@@ -71,6 +72,7 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        RefreshRateOptimizer.optimize(window)
         
         val repo = AlarmRepository(this)
         repository = repo
@@ -93,7 +95,7 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
         hostView.addRenderer(listView)
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             val w = root.width.toFloat()
             val h = root.height.toFloat()
             if (w > 0 && h > 0) {
@@ -230,7 +232,7 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
 
     override fun onThemeChanged(t: ThemeTokens?) {
         if (t == null) return
-        ThemeApplier.applyWindow(window, t)
+        ThemeApplier.applyWindow(this, t)
         hostView.invalidate()
     }
 

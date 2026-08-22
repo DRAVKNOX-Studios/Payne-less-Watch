@@ -161,7 +161,7 @@ class CanvasHostView @JvmOverloads constructor(
             
             if (rendererIndex !in renderers.indices) {
                 node.text = ""
-                node.setBoundsInParent(Rect(0, 0, 1, 1))
+                node.setBoundsInScreen(Rect(0, 0, 1, 1))
                 return
             }
 
@@ -184,6 +184,11 @@ class CanvasHostView @JvmOverloads constructor(
                 )
                 node.setBoundsInParent(rect)
                 
+                val location = IntArray(2)
+                this@CanvasHostView.getLocationOnScreen(location)
+                rect.offset(location[0], location[1])
+                node.setBoundsInScreen(rect)
+                
                 if (item.actions and AccessibilityNodeInfoCompat.ACTION_CLICK != 0) {
                     node.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK)
                 }
@@ -195,7 +200,7 @@ class CanvasHostView @JvmOverloads constructor(
                 }
             } else {
                 node.text = ""
-                node.setBoundsInParent(Rect(0, 0, 1, 1))
+                node.setBoundsInScreen(Rect(0, 0, 1, 1))
             }
         }
 

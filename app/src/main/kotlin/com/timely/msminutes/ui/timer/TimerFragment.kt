@@ -23,7 +23,7 @@ import com.timely.msminutes.widget.WidgetNotifier.notifyUpdate
 class TimerFragment : Fragment(), ThemeListener {
     private lateinit var hostView: CanvasHostView
     private lateinit var listView: CanvasListView
-    private lateinit var emptyRenderer: com.timely.msminutes.ui.canvas.TextRenderer
+    private lateinit var emptyRenderer: com.timely.msminutes.ui.canvas.ComicBubbleRenderer
     private var repository: TimerRepository? = null
     private var currentDialog: TimerCreateDialog? = null
     private var actionHandler: TimerActionHandler? = null
@@ -85,11 +85,12 @@ class TimerFragment : Fragment(), ThemeListener {
         savedInstanceState: Bundle?
     ): View {
         hostView = CanvasHostView(requireContext())
+        hostView.drawBackground = false
         hostView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        emptyRenderer = com.timely.msminutes.ui.canvas.TextRenderer(requireContext(), "No timers yet")
+        emptyRenderer = com.timely.msminutes.ui.canvas.ComicBubbleRenderer(requireContext(), "No timers yet")
         listView = CanvasListView(requireContext(), hostView) { isEmpty ->
             emptyRenderer.isVisible = isEmpty
             hostView.invalidate()

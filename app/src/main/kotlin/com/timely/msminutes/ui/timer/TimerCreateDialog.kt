@@ -21,6 +21,7 @@ import com.timely.msminutes.ui.canvas.items.TimerPickerItemRenderer
 import com.timely.msminutes.ui.canvas.items.ToggleItemRenderer
 import com.timely.msminutes.ui.view.SoundPickerDialog
 import com.timely.msminutes.util.AppExecutors
+import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeStore
 
 class TimerCreateDialog(private val context: Context, private val listener: OnCreateListener) {
@@ -120,6 +121,7 @@ class TimerCreateDialog(private val context: Context, private val listener: OnCr
             onDismissListener?.invoke()
         }
         d.show()
+        RefreshRateOptimizer.optimize(d.window!!)
     }
 
     private fun reload() {

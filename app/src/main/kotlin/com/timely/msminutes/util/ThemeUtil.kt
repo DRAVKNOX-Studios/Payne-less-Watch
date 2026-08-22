@@ -120,13 +120,6 @@ object ThemeUtil {
         val window = activity.window
         val ctrl = WindowCompat.getInsetsController(window, window.decorView)
 
-        if (Build.VERSION.SDK_INT < 35) {
-            @Suppress("DEPRECATION")
-            window.statusBarColor = bg
-            @Suppress("DEPRECATION")
-            window.navigationBarColor = bg
-        }
-
         ctrl.isAppearanceLightStatusBars = isColorLight(bg)
         ctrl.isAppearanceLightNavigationBars = isColorLight(bg)
         val root = activity.findViewById<View>(android.R.id.content)

@@ -21,6 +21,8 @@ import com.timely.msminutes.service.AlarmRingService
 import com.timely.msminutes.ui.canvas.AlarmRingRenderer
 import com.timely.msminutes.ui.canvas.CanvasHostView
 import com.timely.msminutes.util.AlarmScheduler
+import com.timely.msminutes.util.RefreshRateOptimizer
+import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
 import com.timely.msminutes.util.ThemeTokens
@@ -47,6 +49,7 @@ class AlarmRingActivity : AppCompatActivity(), ThemeListener {
         enableEdgeToEdge()
         applyLockScreenFlags()
         super.onCreate(savedInstanceState)
+        RefreshRateOptimizer.optimize(window)
         
         prefs = Prefs(this)
         alarmId = intent.getLongExtra(AlarmScheduler.EXTRA_ALARM_ID, -1)
@@ -72,7 +75,7 @@ class AlarmRingActivity : AppCompatActivity(), ThemeListener {
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             ringRenderer?.onLayout(
                 systemBars.left.toFloat(),
                 systemBars.top.toFloat(),
@@ -116,6 +119,7 @@ class AlarmRingActivity : AppCompatActivity(), ThemeListener {
 
     override fun onThemeChanged(t: ThemeTokens?) {
         if (t == null) return
+        ThemeApplier.applyWindow(this, t)
         hostView.invalidate()
     }
 
@@ -143,20 +147,20 @@ class AlarmRingActivity : AppCompatActivity(), ThemeListener {
         finish()
     }
 
-    @Suppress("DEPRECATION")
     private fun applyLockScreenFlags() {
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
             (getSystemService(KEYGUARD_SERVICE) as KeyguardManager?)
                 ?.requestDismissKeyguard(this, null)
+        } else {
+            @Suppress("DEPRECATION")
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                        or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 }
