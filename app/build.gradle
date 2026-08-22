@@ -11,8 +11,8 @@ android {
         applicationId "com.timely.msminutes"
         minSdk 26
         targetSdk 37
-        versionCode 201
-        versionName "2.0.1"
+        versionCode 220
+        versionName "2.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,8 +51,8 @@ dependencies {
     implementation libs.androidx.fragment
     implementation libs.androidx.activity
     implementation libs.androidx.viewpager2
-    implementation "androidx.appfunctions:appfunctions:1.0.0-alpha10"
-    ksp "androidx.appfunctions:appfunctions-compiler:1.0.0-alpha10"
+    implementation libs.androidx.appfunctions
+    ksp libs.androidx.appfunctions.compiler
 
     testImplementation libs.junit
 }
