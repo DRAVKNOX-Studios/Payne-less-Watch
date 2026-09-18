@@ -36,11 +36,16 @@ class DbHelper private constructor(context: Context?) :
                     + "label TEXT"
                     + ")")
         )
+
+        createStopwatchHistoryTable(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 3) {
             migrateV2toV3(db)
+        }
+        if (oldVersion < 4) {
+            createStopwatchHistoryTable(db)
         }
     }
 
@@ -48,12 +53,25 @@ class DbHelper private constructor(context: Context?) :
         db.execSQL("ALTER TABLE " + TABLE_ALARMS + " ADD COLUMN note TEXT")
     }
 
+    private fun createStopwatchHistoryTable(db: SQLiteDatabase) {
+        db.execSQL(
+            ("CREATE TABLE " + TABLE_STOPWATCH_HISTORY + " ("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "label TEXT,"
+                    + "elapsedTime INTEGER,"
+                    + "laps TEXT,"
+                    + "timestamp INTEGER"
+                    + ")")
+        )
+    }
+
     companion object {
         private const val DB_NAME = "timely.db"
-        private const val DB_VERSION = 3
+        private const val DB_VERSION = 4
 
         const val TABLE_ALARMS: String = "alarms"
         const val TABLE_TIMERS: String = "timers"
+        const val TABLE_STOPWATCH_HISTORY: String = "stopwatch_history"
 
         private var instance: DbHelper? = null
 

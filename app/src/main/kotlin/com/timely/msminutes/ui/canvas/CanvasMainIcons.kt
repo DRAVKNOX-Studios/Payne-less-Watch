@@ -59,13 +59,11 @@ fun CanvasIcons.drawAlarm(canvas: Canvas, x: Float, y: Float, size: Float, color
         lineTo(17.4f, 1.86f)
         lineTo(16.11f, 3.39f)
         lineTo(20.71f, 7.25f)
-        lineTo(22f, 5.72f)
         close()
         moveTo(7.88f, 3.39f)
         lineTo(6.59f, 1.86f)
         lineTo(2f, 5.72f)
         lineTo(3.29f, 7.25f)
-        lineTo(7.88f, 3.39f)
         close()
         moveTo(12.5f, 8f)
         lineTo(11f, 8f)
@@ -93,24 +91,30 @@ fun CanvasIcons.drawAlarm(canvas: Canvas, x: Float, y: Float, size: Float, color
 fun CanvasIcons.drawTimer(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
     drawIcon(canvas, x, y, size, color) {
         moveTo(6f, 2f)
-        lineTo(6f, 8f)
-        lineTo(6.01f, 8f)
-        lineTo(6f, 8.01f)
-        lineTo(10f, 12f)
-        lineTo(6f, 16f)
-        lineTo(6.01f, 16.01f)
-        lineTo(6f, 16.01f)
-        lineTo(6f, 22f)
-        lineTo(18f, 22f)
-        lineTo(18f, 16.01f)
-        lineTo(17.99f, 16.01f)
-        lineTo(18f, 16f)
-        lineTo(14f, 12f)
-        lineTo(18f, 8.01f)
-        lineTo(17.99f, 8f)
-        lineTo(18f, 8f)
         lineTo(18f, 2f)
+        lineTo(18f, 7f)
+        lineTo(13f, 12f)
+        lineTo(18f, 17f)
+        lineTo(18f, 22f)
+        lineTo(6f, 22f)
+        lineTo(6f, 17f)
+        lineTo(11f, 12f)
+        lineTo(6f, 7f)
         lineTo(6f, 2f)
+        close()
+        moveTo(16f, 4f)
+        lineTo(8f, 4f)
+        lineTo(8f, 7.5f)
+        lineTo(12f, 11.5f)
+        lineTo(16f, 7.5f)
+        lineTo(16f, 4f)
+        close()
+        moveTo(12f, 12.5f)
+        lineTo(8f, 16.5f)
+        lineTo(8f, 20f)
+        lineTo(16f, 20f)
+        lineTo(16f, 16.5f)
+        lineTo(12f, 12.5f)
         close()
     }
 }
@@ -139,11 +143,98 @@ fun CanvasIcons.drawStopwatch(canvas: Canvas, x: Float, y: Float, size: Float, c
         cubicTo(15.87f, 6f, 19f, 9.13f, 19f, 13f)
         cubicTo(19f, 16.87f, 15.87f, 20f, 12f, 20f)
         close()
-        moveTo(13f, 7f)
-        lineTo(11f, 7f)
+        moveTo(12.5f, 8f)
+        lineTo(12.5f, 13.25f)
+        lineTo(15.5f, 15f)
+        lineTo(14.75f, 16.25f)
         lineTo(11f, 14f)
-        lineTo(13f, 14f)
-        lineTo(13f, 7f)
+        lineTo(11f, 8f)
+        lineTo(12.5f, 8f)
+        close()
+    }
+}
+
+fun CanvasIcons.drawPlay(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
+    drawIcon(canvas, x, y, size, color) {
+        moveTo(8f, 5f)
+        lineTo(8f, 19f)
+        lineTo(19f, 12f)
+        lineTo(8f, 5f)
+        close()
+    }
+}
+
+fun CanvasIcons.drawPause(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
+    drawIcon(canvas, x, y, size, color) {
+        moveTo(6f, 19f)
+        lineTo(10f, 19f)
+        lineTo(10f, 5f)
+        lineTo(6f, 5f)
+        lineTo(6f, 19f)
+        close()
+        moveTo(14f, 5f)
+        lineTo(14f, 19f)
+        lineTo(18f, 19f)
+        lineTo(18f, 5f)
+        lineTo(14f, 5f)
+        close()
+    }
+}
+
+fun CanvasIcons.drawStop(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
+    drawIcon(canvas, x, y, size, color) {
+        moveTo(6f, 6f)
+        lineTo(18f, 6f)
+        lineTo(18f, 18f)
+        lineTo(6f, 18f)
+        close()
+    }
+}
+
+fun CanvasIcons.drawSave(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
+    drawIcon(canvas, x, y, size, color) {
+        moveTo(20f, 12f)
+        lineTo(18.59f, 10.59f)
+        lineTo(13f, 16.17f)
+        lineTo(13f, 2f)
+        lineTo(11f, 2f)
+        lineTo(11f, 16.17f)
+        lineTo(5.41f, 10.59f)
+        lineTo(4f, 12f)
+        lineTo(12f, 20f)
+        lineTo(20f, 12f)
+        close()
+        moveTo(5f, 18f)
+        lineTo(5f, 20f)
+        lineTo(19f, 20f)
+        lineTo(19f, 18f)
+        lineTo(5f, 18f)
+        close()
+    }
+}
+
+fun CanvasIcons.drawHistory(canvas: Canvas, x: Float, y: Float, size: Float, color: Int) {
+    drawIcon(canvas, x, y, size, color) {
+        moveTo(13f, 3f)
+        cubicTo(8.03f, 3f, 4f, 7.03f, 4f, 12f)
+        cubicTo(4f, 13.5f, 4.38f, 14.91f, 5.04f, 16.14f)
+        lineTo(3.64f, 17.54f)
+        cubicTo(2.61f, 15.95f, 2f, 14.05f, 2f, 12f)
+        cubicTo(2f, 6.48f, 6.48f, 2f, 12f, 2f)
+        cubicTo(15.28f, 2f, 18.15f, 3.59f, 19.91f, 6.03f)
+        lineTo(22f, 4f)
+        lineTo(22f, 10f)
+        lineTo(16f, 10f)
+        lineTo(18.29f, 7.71f)
+        cubicTo(16.83f, 5.43f, 14.28f, 4f, 11.41f, 4f)
+        cubicTo(11.95f, 4f, 12.48f, 4.05f, 13f, 4.14f)
+        moveTo(12.5f, 7f)
+        lineTo(12.5f, 13f)
+        lineTo(17f, 16f)
+        lineTo(16.2f, 17.2f)
+        lineTo(11f, 13.8f)
+        lineTo(11f, 7f)
+        lineTo(12.5f, 7f)
         close()
     }
 }

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.timely.msminutes.data.TimerItem
+import com.timely.msminutes.data.TimerRepository
 import com.timely.msminutes.service.StopwatchService
 import com.timely.msminutes.ui.alarm.AlarmEditActivity
 import com.timely.msminutes.ui.canvas.CanvasHostView
@@ -16,11 +18,14 @@ import com.timely.msminutes.ui.canvas.TabBarRenderer
 import com.timely.msminutes.ui.canvas.ToolbarRenderer
 import com.timely.msminutes.ui.canvas.UndoBarRenderer
 import com.timely.msminutes.ui.settings.SettingsActivity
+import com.timely.msminutes.ui.timer.TimerFragment
+import com.timely.msminutes.util.AppExecutors
 import com.timely.msminutes.util.RefreshRateOptimizer
 import com.timely.msminutes.util.ThemeApplier
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
 import com.timely.msminutes.util.ThemeTokens
+import com.timely.msminutes.util.TimerScheduler
 import com.timely.msminutes.widget.WidgetNotifier.notifyUpdate
 
 class MainActivity : AppCompatActivity(), ThemeListener {
@@ -74,7 +79,7 @@ class MainActivity : AppCompatActivity(), ThemeListener {
             if (currentPosition == 0) {
                 startActivity(Intent(this, AlarmEditActivity::class.java))
             } else if (currentPosition == 1) {
-                val fragment = supportFragmentManager.findFragmentById(fragmentContainerView.id) as? com.timely.msminutes.ui.timer.TimerFragment
+                val fragment = supportFragmentManager.findFragmentById(fragmentContainerView.id) as? TimerFragment
                 fragment?.showCreateDialog()
             } else if (currentPosition == 3) {
                 startActivity(Intent(this, com.timely.msminutes.ui.worldclock.TimeZoneSearchActivity::class.java))
@@ -159,7 +164,7 @@ class MainActivity : AppCompatActivity(), ThemeListener {
     private fun showFragment(position: Int) {
         val fragment: Fragment = when (position) {
             0 -> com.timely.msminutes.ui.alarm.AlarmFragment()
-            1 -> com.timely.msminutes.ui.timer.TimerFragment()
+            1 -> TimerFragment()
             2 -> com.timely.msminutes.ui.stopwatch.StopwatchFragment()
             3 -> com.timely.msminutes.ui.worldclock.WorldClockFragment()
             else -> com.timely.msminutes.ui.alarm.AlarmFragment()
@@ -210,10 +215,43 @@ class MainActivity : AppCompatActivity(), ThemeListener {
         when (intent.action) {
             AlarmClock.ACTION_SET_ALARM -> {
                 showFragment(0)
-                startActivity(Intent(this, AlarmEditActivity::class.java))
+                val editIntent = Intent(this, AlarmEditActivity::class.java).apply {
+                    putExtras(intent)
+                }
+                startActivity(editIntent)
             }
             AlarmClock.ACTION_SHOW_ALARMS -> showFragment(0)
-            AlarmClock.ACTION_SET_TIMER,
+            AlarmClock.ACTION_SET_TIMER -> {
+                val length = intent.getIntExtra(AlarmClock.EXTRA_LENGTH, -1)
+                val skipUi = intent.getBooleanExtra(AlarmClock.EXTRA_SKIP_UI, false)
+                
+                if (length != -1) {
+                    val message = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
+                    val timer = TimerItem().apply {
+                        totalMillis = length * 1000L
+                        remainingMillis = totalMillis
+                        label = message ?: "Timer"
+                        state = TimerItem.STATE_RUNNING
+                        endTimestamp = System.currentTimeMillis() + totalMillis
+                    }
+                    
+                    AppExecutors.get().diskIO {
+                        val repo = TimerRepository(this@MainActivity)
+                        val id = repo.insert(timer)
+                        TimerScheduler.schedule(this@MainActivity, id, timer.endTimestamp)
+                        AppExecutors.get().mainThread {
+                            notifyUpdate(this@MainActivity)
+                            if (skipUi) {
+                                finish()
+                            } else {
+                                showFragment(1)
+                            }
+                        }
+                    }
+                } else {
+                    showFragment(1)
+                }
+            }
             AlarmClock.ACTION_SHOW_TIMERS,
             ACTION_SHOW_TIMER -> showFragment(1)
             ACTION_START_STOPWATCH -> {

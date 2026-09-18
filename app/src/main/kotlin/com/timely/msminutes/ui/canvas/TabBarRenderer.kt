@@ -62,6 +62,7 @@ class TabBarRenderer(
         // We push icons up slightly (to 28dp) to make room for labels at the bottom
         val iconCenterY = bounds.top + 28f * density
         val textBaselineY = bounds.top + 54f * density
+        val shadowColor = (tokens.background and 0x00FFFFFF) or (0xAA shl 24)
 
         for (i in allTabs.indices) {
             val tab = allTabs[i]
@@ -117,6 +118,7 @@ class TabBarRenderer(
                 // Draw Text Label for main tabs
                 textPaint.color = color
                 textPaint.isFakeBoldText = isSelected
+                textPaint.setShadowLayer(1.5f * density, 0f, 0.5f * density, shadowColor)
                 canvas.drawText(tab.label, centerX, textBaselineY, textPaint)
             }
         }

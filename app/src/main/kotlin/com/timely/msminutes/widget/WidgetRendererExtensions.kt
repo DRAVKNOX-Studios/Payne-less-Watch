@@ -1,10 +1,12 @@
 package com.timely.msminutes.widget
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.text.format.DateFormat
+import com.timely.msminutes.R
 import com.timely.msminutes.ui.canvas.CanvasIcons
 import com.timely.msminutes.ui.canvas.drawAlarm
 import com.timely.msminutes.ui.canvas.drawStopwatch
@@ -13,6 +15,7 @@ import java.util.Calendar
 import java.util.Locale
 
 internal fun WidgetRenderer.drawTime(
+    context: Context,
     canvas: Canvas,
     height: Int,
     topPadding: Float,
@@ -28,6 +31,7 @@ internal fun WidgetRenderer.drawTime(
     val hour = cal[Calendar.HOUR_OF_DAY]
     val minute = cal[Calendar.MINUTE]
     val isEasterEggTime = is24h && hour == 0 && minute == 0
+    val shadowColor = context.getColor(R.color.shadow_black)
 
     val timeStr = if (is24h) {
         String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
@@ -169,7 +173,7 @@ internal fun WidgetRenderer.drawTime(
             color = if (isTransparent) accent else fontColor
             textSize = Math.min(14f * density, finalSize * 0.25f)
             if (isTransparent) {
-                setShadowLayer(2f * density, 1f * density, 1f * density, Color.parseColor("#80000000"))
+                setShadowLayer(2f * density, 1f * density, 1f * density, shadowColor)
             } else {
                 clearShadowLayer()
             }
@@ -179,6 +183,7 @@ internal fun WidgetRenderer.drawTime(
 }
 
 internal fun WidgetRenderer.drawBottomRow(
+    context: Context,
     canvas: Canvas,
     width: Int,
     height: Int,
@@ -197,12 +202,13 @@ internal fun WidgetRenderer.drawBottomRow(
     val bottomInset = 16f * density
     val bottomY = bgRect.bottom - bottomInset
     var startX = bgRect.left + 20f * density
+    val shadowColor = context.getColor(R.color.shadow_black)
 
     statusPaint.color = accent
     statusPaint.textSize = Math.min(10f * density, height * 0.1f)
     
     if (isTransparent) {
-        statusPaint.setShadowLayer(1.5f * density, 0.5f * density, 0.5f * density, Color.parseColor("#80000000"))
+        statusPaint.setShadowLayer(1.5f * density, 0.5f * density, 0.5f * density, shadowColor)
     } else {
         statusPaint.clearShadowLayer()
     }
@@ -254,7 +260,7 @@ internal fun WidgetRenderer.drawBottomRow(
         color = (fontColor and 0x00FFFFFF) or (0x99 shl 24)
         textSize = Math.min(12.5f * density, height * 0.15f)
         if (isTransparent) {
-            setShadowLayer(1.5f * density, 0.5f * density, 0.5f * density, Color.parseColor("#80000000"))
+            setShadowLayer(1.5f * density, 0.5f * density, 0.5f * density, shadowColor)
             color = accent
         } else {
             clearShadowLayer()

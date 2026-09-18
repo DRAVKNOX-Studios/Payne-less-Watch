@@ -7,7 +7,7 @@ import com.timely.msminutes.data.Prefs
 import com.timely.msminutes.data.TimerItem
 import com.timely.msminutes.data.TimerRepository
 import com.timely.msminutes.util.AlarmScheduler
-import java.util.Locale
+import com.timely.msminutes.util.TimeFormatUtil
 
 object WidgetInfoProvider {
     fun getWidgetState(context: Context): WidgetState {
@@ -19,14 +19,7 @@ object WidgetInfoProvider {
         val alarms = repository.all
         val nextAlarm = findNextAlarm(alarms)
         if (nextAlarm != null) {
-            alarmInfo = if (prefs.is24Hour()) {
-                String.format(Locale.getDefault(), "%02d:%02d", nextAlarm.hour, nextAlarm.minute)
-            } else {
-                val hour12 = nextAlarm.hour % 12
-                val displayHour = if (hour12 == 0) 12 else hour12
-                val amPm = if (nextAlarm.hour < 12) "AM" else "PM"
-                String.format(Locale.getDefault(), "%d:%02d %s", displayHour, nextAlarm.minute, amPm)
-            }
+            alarmInfo = TimeFormatUtil.formatClock(nextAlarm.hour, nextAlarm.minute, prefs.is24Hour())
             alarmLabel = nextAlarm.label
         }
 

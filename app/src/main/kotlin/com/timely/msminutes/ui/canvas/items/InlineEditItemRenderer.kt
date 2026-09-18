@@ -30,7 +30,7 @@ class InlineEditItemRenderer(
     private var scrollListener: ((Float) -> Unit)? = null
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         val textPaint = textPaint
         val subTextPaint = subTextPaint
 

@@ -91,6 +91,7 @@ class ClockWidgetProvider : AppWidgetProvider() {
         private val cache = mutableMapOf<Int, Entry>()
 
         fun getOrRender(
+            context: Context,
             widgetId: Int,
             width: Int,
             height: Int,
@@ -106,7 +107,7 @@ class ClockWidgetProvider : AppWidgetProvider() {
             ) {
                 return cached.bitmap
             }
-            val bitmap = WidgetRenderer.render(width, height, drawDensity, prefs, state)
+            val bitmap = WidgetRenderer.render(context, width, height, drawDensity, prefs, state)
             cache[widgetId] = Entry(state, width, height, bitmap)
             return bitmap
         }
@@ -166,7 +167,7 @@ class ClockWidgetProvider : AppWidgetProvider() {
             try {
                 val state  = WidgetInfoProvider.getWidgetState(context)
                 val bitmap = RenderCache.getOrRender(
-                    appWidgetId, width, height, drawDensity, prefs, state
+                    context, appWidgetId, width, height, drawDensity, prefs, state
                 )
                 views.setImageViewBitmap(R.id.widget_background_img, bitmap)
                 views.setViewVisibility(R.id.widget_background_img, View.VISIBLE)

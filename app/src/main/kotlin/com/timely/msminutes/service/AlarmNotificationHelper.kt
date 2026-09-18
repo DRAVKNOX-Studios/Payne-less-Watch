@@ -33,8 +33,8 @@ object AlarmNotificationHelper {
     fun buildPlaceholderNotification(context: Context, fullscreenPi: PendingIntent): Notification =
         NotificationCompat.Builder(context, NotificationChannels.ALARM_RING)
             .setSmallIcon(R.drawable.ic_alarm)
-            .setContentTitle("Alarm")
-            .setContentText("Ringing\u2026")
+            .setContentTitle(context.getString(R.string.alarm))
+            .setContentText(context.getString(R.string.ringing))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setFullScreenIntent(fullscreenPi, true)
@@ -51,28 +51,28 @@ object AlarmNotificationHelper {
             context, 2,
             Intent(context, AlarmRingService::class.java).setAction(AlarmRingService.ACTION_SNOOZE), baseFlags)
         val fullscreenPi = buildFullscreenPendingIntent(context, alarm.id)
-        val label        = if (!alarm.label.isNullOrEmpty()) alarm.label else "Alarm"
+        val label        = if (!alarm.label.isNullOrEmpty()) alarm.label else context.getString(R.string.alarm)
         val timeStr      = TimeFormatUtil.formatClock(alarm.hour, alarm.minute, prefs.is24Hour())
         
         return NotificationCompat.Builder(context, NotificationChannels.ALARM_RING)
             .setSmallIcon(R.drawable.ic_alarm)
-            .setContentTitle("Alarm: $label")
-            .setContentText("Ringing ($timeStr)")
+            .setContentTitle("${context.getString(R.string.alarm)}: $label")
+            .setContentText("${context.getString(R.string.ringing)} ($timeStr)")
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setFullScreenIntent(fullscreenPi, true)
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .addAction(0, "Dismiss", dismissPi)
-            .addAction(0, "Snooze", snoozePi)
+            .addAction(0, context.getString(R.string.dismiss), dismissPi)
+            .addAction(0, context.getString(R.string.snooze), snoozePi)
             .build()
     }
     
     fun buildMissedNotification(context: Context, alarm: Alarm): Notification {
-        val lbl = if (!alarm.label.isNullOrEmpty()) alarm.label else "Alarm"
+        val lbl = if (!alarm.label.isNullOrEmpty()) alarm.label else context.getString(R.string.alarm)
         return NotificationCompat.Builder(context, NotificationChannels.ALARM_MISSED)
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .setContentTitle("Missed alarm")
+            .setContentTitle(context.getString(R.string.missed_alarm))
             .setContentText(lbl)
             .setAutoCancel(true)
             .build()

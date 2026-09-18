@@ -3,6 +3,7 @@ package com.timely.msminutes.ui.canvas.items
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import com.timely.msminutes.ui.canvas.CanvasRenderer
 import com.timely.msminutes.util.ThemeTokens
 
 class LapItemRenderer(
@@ -17,7 +18,7 @@ class LapItemRenderer(
     override val isSwipeable: Boolean = false
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         val r = 24f * density
         val hMargin = 14f * density
         cardRect.set(hMargin, 4f * density, width - hMargin, height - 4f * density)
@@ -32,6 +33,15 @@ class LapItemRenderer(
         textPaint.color = tokens.textPrimary
         textPaint.textAlign = Paint.Align.RIGHT
         canvas.drawText(lapTime, width - hMargin - 16f * density, 38f * density, textPaint)
+    }
+
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
+        super.populateAccessibility(items, listBounds, absoluteTop, "Lap $lapIndex, $lapTime")
     }
 
     override fun onClick(x: Float, y: Float) {}

@@ -41,11 +41,16 @@ object CanvasIcons {
             withScale(scale, scale) {
                 if (stroke) {
                     strokePaint.color = color
-                    strokePaint.strokeWidth = 2f
+                    strokePaint.strokeWidth = 1.5f // Thinner stroke for high density
                     canvas.drawPath(path, strokePaint)
                 } else {
                     paint.color = color
+                    paint.isAntiAlias = true
+                    paint.isFilterBitmap = true
+                    val glowColor = (color and 0x00FFFFFF) or (0x44 shl 24)
+                    paint.setShadowLayer(4f, 0f, 0f, glowColor)
                     canvas.drawPath(path, paint)
+                    paint.clearShadowLayer()
                 }
             }
         }

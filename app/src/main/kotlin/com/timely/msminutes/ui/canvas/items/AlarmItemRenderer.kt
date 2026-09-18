@@ -1,10 +1,11 @@
 package com.timely.msminutes.ui.canvas.items
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.RectF
 import android.graphics.Typeface
+import com.timely.msminutes.R
 import com.timely.msminutes.data.Alarm
+import com.timely.msminutes.data.Prefs
 import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.util.AlarmTimeUtil
 import com.timely.msminutes.util.ThemeTokens
@@ -30,46 +31,21 @@ class AlarmItemRenderer(
     private val cardRect = RectF()
     private val toggleRect = RectF()
     private var is24h = false
-    private val deleteColor = Color.parseColor("#E53935")
 
     override fun drawBackground(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        if (swipeX > 0f) {
-            BaseItemRenderer.resetPaints(density)
-            val bgPaint = BaseItemRenderer.bgPaint
-            val subTextPaint = BaseItemRenderer.subTextPaint
-
-            val r = 24f * density
-            val hMargin = 14f * density
-            cardRect.set(hMargin, 2f * density, width - hMargin, height - 2f * density)
-            
-            bgPaint.color = deleteColor
-            canvas.drawRoundRect(cardRect, r, r, bgPaint)
-            
-            subTextPaint.color = Color.WHITE
-            subTextPaint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("DELETE", hMargin + 18f * density, height / 2f + 6f * density, subTextPaint)
-        } else if (swipeX < 0f) {
-            BaseItemRenderer.resetPaints(density)
-            val bgPaint = BaseItemRenderer.bgPaint
-            val subTextPaint = BaseItemRenderer.subTextPaint
-
-            val r = 24f * density
-            val hMargin = 14f * density
-            cardRect.set(hMargin, 2f * density, width - hMargin, height - 2f * density)
-            
-            bgPaint.color = tokens.accent
-            canvas.drawRoundRect(cardRect, r, r, bgPaint)
-            
-            subTextPaint.color = Color.WHITE
-            subTextPaint.typeface = Typeface.DEFAULT_BOLD
-            val text = "COPY"
-            val textW = subTextPaint.measureText(text)
-            canvas.drawText(text, width - hMargin - 18f * density - textW, height / 2f + 6f * density, subTextPaint)
+        if (swipeX != 0f) {
+            BaseItemRenderer.drawSwipeBackground(
+                canvas, tokens, width, height, swipeX, density,
+                androidContext.getColor(R.color.delete_red),
+                androidContext.getString(R.string.delete),
+                androidContext.getString(R.string.copy),
+                2f * density
+            )
         }
     }
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val bgPaint = BaseItemRenderer.bgPaint
         val strokePaint = BaseItemRenderer.strokePaint
         val accentLinePaint = BaseItemRenderer.accentLinePaint
@@ -116,7 +92,7 @@ class AlarmItemRenderer(
         // 4. Main Time (Center Left)
         timePaint.color = mainColor
         timePaint.textSize = 54f * density
-        is24h = android.text.format.DateFormat.is24HourFormat(androidContext)
+        is24h = Prefs(androidContext).is24Hour()
         val timeStr = TimeFormatUtil.formatClock(alarm.hour, alarm.minute, is24h)
         canvas.drawText(timeStr, paddingX, 86f * density, timePaint)
 

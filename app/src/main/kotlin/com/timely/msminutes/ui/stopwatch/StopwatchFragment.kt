@@ -10,11 +10,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.timely.msminutes.data.LapStore
 import com.timely.msminutes.data.Prefs
+import com.timely.msminutes.data.StopwatchHistoryItem
+import com.timely.msminutes.data.StopwatchRepository
 import com.timely.msminutes.service.StopwatchService
+import com.timely.msminutes.ui.canvas.CanvasDialog
 import com.timely.msminutes.ui.canvas.CanvasHostView
 import com.timely.msminutes.ui.canvas.CanvasListView
+import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.ui.canvas.StopwatchHeaderRenderer
+import com.timely.msminutes.ui.canvas.items.ButtonItemRenderer
+import com.timely.msminutes.ui.canvas.items.HeaderItemRenderer
+import com.timely.msminutes.ui.canvas.items.InlineEditItemRenderer
 import com.timely.msminutes.ui.canvas.items.LapItemRenderer
+import com.timely.msminutes.util.AppExecutors
 import com.timely.msminutes.util.ThemeStore
 import com.timely.msminutes.util.ThemeStore.ThemeListener
 import com.timely.msminutes.util.ThemeTokens
@@ -28,6 +36,7 @@ class StopwatchFragment : Fragment(), ThemeListener {
     private lateinit var listView: CanvasListView
 
     private var prefs: Prefs? = null
+    private var repository: StopwatchRepository? = null
     private val laps: MutableList<String?> = ArrayList()
 
     private val tickHandler = Handler(Looper.getMainLooper())
@@ -47,7 +56,9 @@ class StopwatchFragment : Fragment(), ThemeListener {
         headerRenderer = StopwatchHeaderRenderer(
             requireContext(),
             onStartPause = { if (prefs?.isStopwatchRunning == true) pause() else start() },
-            onLapReset = { if (prefs?.isStopwatchRunning == true) addLap() else reset() }
+            onLapReset = { if (prefs?.isStopwatchRunning == true) addLap() else reset() },
+            onSave = { saveStopwatch() },
+            onHistory = { showHistory() }
         )
         listView = CanvasListView(requireContext(), hostView) { }
         
@@ -55,6 +66,7 @@ class StopwatchFragment : Fragment(), ThemeListener {
         hostView.addRenderer(listView)
 
         prefs = Prefs(requireContext())
+        repository = StopwatchRepository(requireContext())
         restoreLaps()
 
         return hostView
@@ -68,7 +80,7 @@ class StopwatchFragment : Fragment(), ThemeListener {
             if (w <= 0 || h <= 0) return@addOnLayoutChangeListener
             
             val d = resources.displayMetrics.density
-            val headerH = 150f * d
+            val headerH = 180f * d
             headerRenderer.onLayout(0f, 0f, w, headerH)
             listView.onLayout(0f, headerH, w, h)
             reloadLaps()
@@ -170,6 +182,43 @@ class StopwatchFragment : Fragment(), ThemeListener {
         laps.add(0, TimeFormatUtil.formatStopwatch(currentElapsed()))
         saveLaps()
         reloadLaps()
+    }
+
+    private fun saveStopwatch() {
+        val elapsed = currentElapsed()
+        if (elapsed <= 0) return
+
+        var labelInput = ""
+        val dialog = CanvasDialog(requireContext()) { d, list ->
+            val items = mutableListOf<ItemRenderer>()
+            items.add(HeaderItemRenderer(requireContext(), "Save Stopwatch"))
+            items.add(InlineEditItemRenderer(requireContext(), list.host, list, "Label", labelInput, "Stopwatch label") {
+                labelInput = it
+            })
+            items.add(ButtonItemRenderer(requireContext(), "Save") {
+                val item = StopwatchHistoryItem(
+                    label = if (labelInput.trim().isEmpty()) "Stopwatch" else labelInput.trim(),
+                    elapsedTime = elapsed,
+                    laps = LapStore.encode(laps)
+                )
+                AppExecutors.get().diskIO {
+                    repository?.insert(item)
+                }
+                d.dismiss()
+            })
+            items.add(ButtonItemRenderer(requireContext(), "Cancel", isDanger = true) {
+                d.dismiss()
+            })
+            list.setItems(items)
+        }
+        dialog.show()
+    }
+
+    private fun showHistory() {
+        parentFragmentManager.beginTransaction()
+            .replace((requireView().parent as ViewGroup).id, StopwatchHistoryFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun currentElapsed(): Long {

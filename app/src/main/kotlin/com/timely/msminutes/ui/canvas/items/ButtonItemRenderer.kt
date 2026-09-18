@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
+import com.timely.msminutes.ui.canvas.CanvasRenderer
 import com.timely.msminutes.util.ThemeTokens
 
 class ButtonItemRenderer(
@@ -16,7 +17,7 @@ class ButtonItemRenderer(
     override var height: Float = 72f * density
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         val r = 16f * density
         val rect = RectF(paddingStart, 8f * density, width - paddingEnd, height - 8f * density)
         
@@ -33,9 +34,14 @@ class ButtonItemRenderer(
         onClickAction()
     }
 
-    override fun populateAccessibility(items: MutableList<com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem>, listBounds: RectF, absoluteTop: Float) {
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
         items.add(
-            com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem(
+            CanvasRenderer.AccessibilityItem(
                 id = (top.toInt() and 0xFFFF),
                 bounds = RectF(listBounds.left, Math.max(listBounds.top, absoluteTop), listBounds.right, Math.min(absoluteTop + height, listBounds.bottom)),
                 label = text,

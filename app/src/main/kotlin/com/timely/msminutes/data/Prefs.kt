@@ -15,17 +15,18 @@ class Prefs(context: Context) {
     }
 
     fun is24Hour(): Boolean {
-        if (!sp.contains(KEY_24H_SET)) {
-            return DateFormat.is24HourFormat(context)
+        val mode = sp.getInt(KEY_24H_MODE, MODE_24H_SYSTEM)
+        return when (mode) {
+            MODE_24H_OFF -> false
+            MODE_24H_ON -> true
+            else -> DateFormat.is24HourFormat(context)
         }
-        return sp.getBoolean(KEY_24H_VALUE, true)
     }
 
-    fun set24Hour(value: Boolean) {
-        sp.edit()
-            .putBoolean(KEY_24H_SET, true)
-            .putBoolean(KEY_24H_VALUE, value)
-            .apply()
+    fun get24HourMode(): Int = sp.getInt(KEY_24H_MODE, MODE_24H_SYSTEM)
+
+    fun set24HourMode(mode: Int) {
+        sp.edit().putInt(KEY_24H_MODE, mode).apply()
     }
 
     var theme: String?
@@ -172,8 +173,12 @@ class Prefs(context: Context) {
 
     companion object {
         private const val FILE = "timely_prefs"
-        private const val KEY_24H_SET   = "format_24h_set"
-        private const val KEY_24H_VALUE = "format_24h"
+        private const val KEY_24H_MODE = "format_24h_mode"
+        
+        const val MODE_24H_SYSTEM = 0
+        const val MODE_24H_OFF = 1
+        const val MODE_24H_ON = 2
+
         const val DEFAULT_ACCENT: Int = -0xa8de
 
         const val POWER_ACTION_NONE: Int = 0

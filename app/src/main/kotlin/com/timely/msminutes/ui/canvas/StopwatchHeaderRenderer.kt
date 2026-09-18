@@ -10,7 +10,9 @@ import com.timely.msminutes.util.ThemeTokens
 class StopwatchHeaderRenderer(
     context: android.content.Context,
     private val onStartPause: () -> Unit,
-    private val onLapReset: () -> Unit
+    private val onLapReset: () -> Unit,
+    private val onSave: () -> Unit,
+    private val onHistory: () -> Unit
 ) : CanvasRenderer {
 
     override val bounds = RectF()
@@ -29,6 +31,8 @@ class StopwatchHeaderRenderer(
 
     private val leftBtnBounds = RectF()
     private val rightBtnBounds = RectF()
+    private val saveBtnBounds = RectF()
+    private val historyBtnBounds = RectF()
 
     var timeText: String = "00:00.00"
     var leftBtnText: String = "Start"
@@ -37,44 +41,75 @@ class StopwatchHeaderRenderer(
     override fun onLayout(left: Float, top: Float, right: Float, bottom: Float) {
         super.onLayout(left, top, right, bottom)
         val centerX = bounds.centerX()
-        val btnY = bottom - 40f * density
-        val btnWidth = 80f * density
-        val btnHeight = 36f * density
-        leftBtnBounds.set(centerX - btnWidth - 8f * density, btnY, centerX - 8f * density, btnY + btnHeight)
-        rightBtnBounds.set(centerX + 8f * density, btnY, centerX + btnWidth + 8f * density, btnY + btnHeight)
+        val btnSize = 48f * density
+        val margin = 16f * density
+        
+        val rowY = top + 80f * density
+        
+        // Arrange 4 buttons in a row
+        val totalWidth = btnSize * 4 + margin * 3
+        var startX = centerX - totalWidth / 2f
+        
+        leftBtnBounds.set(startX, rowY, startX + btnSize, rowY + btnSize)
+        startX += btnSize + margin
+        rightBtnBounds.set(startX, rowY, startX + btnSize, rowY + btnSize)
+        startX += btnSize + margin
+        saveBtnBounds.set(startX, rowY, startX + btnSize, rowY + btnSize)
+        startX += btnSize + margin
+        historyBtnBounds.set(startX, rowY, startX + btnSize, rowY + btnSize)
     }
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens) {
         // Draw Time
         timePaint.color = tokens.textPrimary
+        timePaint.setShadowLayer(8f * density, 0f, 0f, tokens.accent)
         canvas.drawText(timeText, bounds.centerX(), bounds.top + 60f * density, timePaint)
 
-        // Draw Left Button
-        btnPaint.color = tokens.accent
-        canvas.drawRoundRect(leftBtnBounds, 24f * density, 24f * density, btnPaint)
-        btnTextPaint.color = tokens.textPrimary
-        canvas.drawText(leftBtnText, leftBtnBounds.centerX(), leftBtnBounds.centerY() + 6f * density, btnTextPaint)
+        val iconSize = 24f * density
 
-        // Draw Right Button
+        // Draw Left Button (Play/Pause)
+        btnPaint.color = tokens.accent
+        canvas.drawRoundRect(leftBtnBounds, 12f * density, 12f * density, btnPaint)
+        if (leftBtnText == "Pause") {
+            CanvasIcons.drawPause(canvas, leftBtnBounds.centerX() - iconSize/2, leftBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
+        } else {
+            CanvasIcons.drawPlay(canvas, leftBtnBounds.centerX() - iconSize/2, leftBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
+        }
+
+        // Draw Right Button (Lap/Stop/Reset)
         btnPaint.color = tokens.surface
-        canvas.drawRoundRect(rightBtnBounds, 24f * density, 24f * density, btnPaint)
-        btnTextPaint.color = tokens.textPrimary
-        canvas.drawText(rightBtnText, rightBtnBounds.centerX(), rightBtnBounds.centerY() + 6f * density, btnTextPaint)
+        canvas.drawRoundRect(rightBtnBounds, 12f * density, 12f * density, btnPaint)
+        if (rightBtnText == "Reset" || rightBtnText == "Stop") {
+            CanvasIcons.drawStop(canvas, rightBtnBounds.centerX() - iconSize/2, rightBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
+        } else {
+            CanvasIcons.drawAdd(canvas, rightBtnBounds.centerX() - iconSize/2, rightBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
+        }
+
+        // Draw Save Button
+        canvas.drawRoundRect(saveBtnBounds, 12f * density, 12f * density, btnPaint)
+        CanvasIcons.drawSave(canvas, saveBtnBounds.centerX() - iconSize/2, saveBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
+
+        // Draw History Button
+        canvas.drawRoundRect(historyBtnBounds, 12f * density, 12f * density, btnPaint)
+        CanvasIcons.drawHistory(canvas, historyBtnBounds.centerX() - iconSize/2, historyBtnBounds.centerY() - iconSize/2, iconSize, tokens.textPrimary)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
-            return leftBtnBounds.contains(event.x, event.y) || rightBtnBounds.contains(event.x, event.y)
+            return leftBtnBounds.contains(event.x, event.y) || 
+                   rightBtnBounds.contains(event.x, event.y) ||
+                   saveBtnBounds.contains(event.x, event.y) ||
+                   historyBtnBounds.contains(event.x, event.y)
         }
         if (event.action == MotionEvent.ACTION_UP) {
-            if (leftBtnBounds.contains(event.x, event.y)) {
-                onStartPause()
-                return true
+            when {
+                leftBtnBounds.contains(event.x, event.y) -> onStartPause()
+                rightBtnBounds.contains(event.x, event.y) -> onLapReset()
+                saveBtnBounds.contains(event.x, event.y) -> onSave()
+                historyBtnBounds.contains(event.x, event.y) -> onHistory()
+                else -> return false
             }
-            if (rightBtnBounds.contains(event.x, event.y)) {
-                onLapReset()
-                return true
-            }
+            return true
         }
         return false
     }
@@ -89,23 +124,10 @@ class StopwatchHeaderRenderer(
                 clickable = false
             )
         )
-        // Left Button
-        items.add(
-            CanvasRenderer.AccessibilityItem(
-                id = 1,
-                bounds = leftBtnBounds,
-                label = leftBtnText,
-                className = "android.widget.Button"
-            )
-        )
-        // Right Button
-        items.add(
-            CanvasRenderer.AccessibilityItem(
-                id = 2,
-                bounds = rightBtnBounds,
-                label = rightBtnText,
-                className = "android.widget.Button"
-            )
-        )
+        // Buttons
+        items.add(CanvasRenderer.AccessibilityItem(id = 1, bounds = leftBtnBounds, label = leftBtnText, className = "android.widget.Button"))
+        items.add(CanvasRenderer.AccessibilityItem(id = 2, bounds = rightBtnBounds, label = rightBtnText, className = "android.widget.Button"))
+        items.add(CanvasRenderer.AccessibilityItem(id = 3, bounds = saveBtnBounds, label = "Save", className = "android.widget.Button"))
+        items.add(CanvasRenderer.AccessibilityItem(id = 4, bounds = historyBtnBounds, label = "History", className = "android.widget.Button"))
     }
 }

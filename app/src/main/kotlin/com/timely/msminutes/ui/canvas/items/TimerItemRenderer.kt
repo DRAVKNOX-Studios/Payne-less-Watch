@@ -1,10 +1,10 @@
 package com.timely.msminutes.ui.canvas.items
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Typeface
+import com.timely.msminutes.R
 import com.timely.msminutes.data.TimerItem
 import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.util.ThemeTokens
@@ -33,42 +33,21 @@ class TimerItemRenderer(
     private val pauseBounds = RectF()
     private val resetBounds = RectF()
     private val playPath = Path()
-    private val deleteColor = Color.parseColor("#E53935")
 
     override fun drawBackground(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        if (swipeX > 0f) {
-            BaseItemRenderer.resetPaints(density)
-            val bgPaint = BaseItemRenderer.bgPaint
-            val subTextPaint = BaseItemRenderer.subTextPaint
-
-            val r = 24f * density
-            val hMargin = 14f * density
-            cardRect.set(hMargin, 8f * density, width - hMargin, height - 8f * density)
-            bgPaint.color = deleteColor
-            canvas.drawRoundRect(cardRect, r, r, bgPaint)
-            subTextPaint.color = Color.WHITE
-            subTextPaint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("DELETE", hMargin + 18f * density, height / 2f + 6f * density, subTextPaint)
-        } else if (swipeX < 0f) {
-            BaseItemRenderer.resetPaints(density)
-            val bgPaint = BaseItemRenderer.bgPaint
-            val subTextPaint = BaseItemRenderer.subTextPaint
-
-            val r = 24f * density
-            val hMargin = 14f * density
-            cardRect.set(hMargin, 8f * density, width - hMargin, height - 8f * density)
-            bgPaint.color = tokens.accent
-            canvas.drawRoundRect(cardRect, r, r, bgPaint)
-            subTextPaint.color = Color.WHITE
-            subTextPaint.typeface = Typeface.DEFAULT_BOLD
-            val text = "COPY"
-            val textW = subTextPaint.measureText(text)
-            canvas.drawText(text, width - hMargin - 18f * density - textW, height / 2f + 6f * density, subTextPaint)
+        if (swipeX != 0f) {
+            BaseItemRenderer.drawSwipeBackground(
+                canvas, tokens, width, height, swipeX, density,
+                androidContext.getColor(R.color.delete_red),
+                androidContext.getString(R.string.delete),
+                androidContext.getString(R.string.copy),
+                8f * density
+            )
         }
     }
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val bgPaint = BaseItemRenderer.bgPaint
         val strokePaint = BaseItemRenderer.strokePaint
         val accentLinePaint = BaseItemRenderer.accentLinePaint
@@ -99,7 +78,7 @@ class TimerItemRenderer(
                        (item.state == TimerItem.STATE_RUNNING && displayMillis <= 0)
 
         if (item.state == TimerItem.STATE_RUNNING || isRinging) {
-            accentLinePaint.color = if (isRinging) deleteColor else tokens.accent
+            accentLinePaint.color = if (isRinging) androidContext.getColor(R.color.delete_red) else tokens.accent
             val stripWidth = 4f * density
             val stripX = hMargin + 12f * density
             canvas.drawRoundRect(stripX, cardRect.top + 20f * density, stripX + stripWidth, cardRect.bottom - 20f * density, stripWidth/2, stripWidth/2, accentLinePaint)
@@ -108,7 +87,7 @@ class TimerItemRenderer(
         val paddingX = hMargin + 22f * density
 
         // 3. Draw Time
-        timePaint.color = if (isRinging) deleteColor else tokens.textPrimary
+        timePaint.color = if (isRinging) androidContext.getColor(R.color.delete_red) else tokens.textPrimary
         timePaint.textSize = 46f * density
         val timeStr = TimeFormatUtil.formatTimer(displayMillis)
         canvas.drawText(timeStr, paddingX, 68f * density, timePaint)
@@ -136,7 +115,7 @@ class TimerItemRenderer(
         pauseBounds.set(width - hMargin - 56f * density, 25f * density, width - hMargin - 16f * density, 65f * density)
         
         if (isRinging) {
-            bgPaint.color = deleteColor // Red for End/Stop
+            bgPaint.color = androidContext.getColor(R.color.delete_red) // Red for End/Stop
         } else {
             bgPaint.color = tokens.accent
         }

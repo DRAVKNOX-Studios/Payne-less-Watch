@@ -1,5 +1,6 @@
 package com.timely.msminutes.widget
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
+import com.timely.msminutes.R
 import com.timely.msminutes.data.Prefs
 
 object WidgetRenderer {
@@ -54,6 +56,7 @@ object WidgetRenderer {
     }
 
     fun render(
+        context: Context,
         width: Int,
         height: Int,
         renderDensity: Float,
@@ -69,6 +72,7 @@ object WidgetRenderer {
         val fontColor = prefs.fontColor
         val is24h = prefs.is24Hour()
         val isTransparent = prefs.isWidgetTransparent
+        val shadowColor = context.getColor(R.color.shadow_black)
 
         val bgMargin = if (isTransparent) 0f else 4f * density
         val contentPadding = bgMargin + 8f * density
@@ -111,7 +115,7 @@ object WidgetRenderer {
             notePaint.textSize = Math.min(12f * density, height * 0.1f)
             
             if (isTransparent) {
-                notePaint.setShadowLayer(2f * density, 1f * density, 1f * density, Color.parseColor("#80000000"))
+                notePaint.setShadowLayer(2f * density, 1f * density, 1f * density, shadowColor)
             } else {
                 notePaint.clearShadowLayer()
             }
@@ -121,11 +125,11 @@ object WidgetRenderer {
 
         // 3. Time
         val bottomLimit = bgRect.bottom - (36f * density)
-        drawTime(canvas, height, topPadding, bottomLimit, bgRect, is24h, fontColor, accent, isTransparent, density)
+        drawTime(context, canvas, height, topPadding, bottomLimit, bgRect, is24h, fontColor, accent, isTransparent, density)
 
         // 4. Bottom Row (Status + Date)
         drawBottomRow(
-            canvas, width, height, bgRect, accent, fontColor, is24h, isTransparent, density,
+            context, canvas, width, height, bgRect, accent, fontColor, is24h, isTransparent, density,
             state.alarmInfo, state.alarmLabel, state.timerMillis, state.timerLabel, state.stopwatchMillis
         )
 

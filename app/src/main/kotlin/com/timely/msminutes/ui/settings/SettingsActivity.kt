@@ -1,5 +1,6 @@
 package com.timely.msminutes.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import com.timely.msminutes.ui.canvas.CanvasListView
 import com.timely.msminutes.ui.canvas.ToolbarRenderer
 import com.timely.msminutes.ui.canvas.items.ButtonItemRenderer
 import com.timely.msminutes.ui.canvas.items.ColorPickerItemRenderer
+import com.timely.msminutes.ui.canvas.items.DividerItemRenderer
 import com.timely.msminutes.ui.canvas.items.DurationPickerItemRenderer
 import com.timely.msminutes.ui.canvas.items.HeaderItemRenderer
 import com.timely.msminutes.ui.canvas.items.InlineEditItemRenderer
@@ -75,15 +77,22 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
         val p = prefs ?: return
         val items = mutableListOf<com.timely.msminutes.ui.canvas.ItemRenderer>()
         
-        items.add(HeaderItemRenderer(this, "ALARM"))
-        items.add(ToggleItemRenderer(this, "24-hour format", p.is24Hour()) {
-            p.set24Hour(it)
-            notifyUpdate(this)
+        items.add(HeaderItemRenderer(this, "General"))
+        val formatOptions = listOf("Follow System", "12-hour", "24-hour")
+        val currentMode = p.get24HourMode()
+        items.add(SelectorItemRenderer(this, "Time format", formatOptions[currentMode]) {
+            showCanvasSelector("Time format", formatOptions, currentMode) { index ->
+                p.set24HourMode(index)
+                notifyUpdate(this)
+                reload()
+            }
         })
         items.add(ToggleItemRenderer(this, "Gradual volume", p.isGradualVolumeDefault) {
             p.isGradualVolumeDefault = it
         })
         
+        items.add(DividerItemRenderer(this))
+        items.add(HeaderItemRenderer(this, "Behavior"))
         val powerActions = listOf("Nothing", "Snooze", "Dismiss")
         items.add(SelectorItemRenderer(this, "Power button", powerActions.getOrElse(p.powerButtonAction) { "Snooze" }) {
             showCanvasSelector("Power button", powerActions, p.powerButtonAction) { index ->
@@ -91,23 +100,12 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
                 reload()
             }
         })
-
-        items.add(HeaderItemRenderer(this, "SNOOZE"))
         items.add(DurationPickerItemRenderer(this, "Snooze duration", p.defaultSnoozeMinutes) {
             p.defaultSnoozeMinutes = it
         })
 
-        items.add(HeaderItemRenderer(this, "WIDGET"))
-        items.add(InlineEditItemRenderer(this, hostView, listView, "Note", p.widgetNote ?: "", "Enter widget note") {
-            p.widgetNote = it
-            notifyUpdate(this)
-        })
-        items.add(ToggleItemRenderer(this, "Transparent background", p.isWidgetTransparent) {
-            p.isWidgetTransparent = it
-            notifyUpdate(this)
-        })
-
-        items.add(HeaderItemRenderer(this, "THEME"))
+        items.add(DividerItemRenderer(this))
+        items.add(HeaderItemRenderer(this, "Appearance"))
         items.add(ToggleItemRenderer(this, "Use Custom Colors", p.isCustomTheme) {
             p.isCustomTheme = it
             notifyUpdate(this)
@@ -117,34 +115,47 @@ class SettingsActivity : AppCompatActivity(), ThemeListener {
             }
         })
 
-        items.add(ColorPickerItemRenderer(this, "Background", p.backgroundColor) {
-            showCustomColorPicker(p.backgroundColor) {
-                p.backgroundColor = it
-                if (p.isCustomTheme) {
-                    p.fontColor = if (ThemeApplier.isLight(it)) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+        if (p.isCustomTheme) {
+            items.add(ColorPickerItemRenderer(this, "Background", p.backgroundColor) {
+                showCustomColorPicker(p.backgroundColor) {
+                    p.backgroundColor = it
+                    if (p.isCustomTheme) {
+                        p.fontColor = if (ThemeApplier.isLight(it)) Color.BLACK else Color.WHITE
+                    }
+                    notifyUpdate(this)
+                    ThemeStore.get().refresh()
+                    reload()
                 }
-                notifyUpdate(this)
-                ThemeStore.get().refresh()
-                reload()
-            }
-        })
+            })
 
-        items.add(ColorPickerItemRenderer(this, "Accent", p.accentColor) {
-            showCustomColorPicker(p.accentColor) {
-                p.accentColor = it
-                notifyUpdate(this)
-                ThemeStore.get().refresh()
-                reload()
-            }
-        })
+            items.add(ColorPickerItemRenderer(this, "Accent", p.accentColor) {
+                showCustomColorPicker(p.accentColor) {
+                    p.accentColor = it
+                    notifyUpdate(this)
+                    ThemeStore.get().refresh()
+                    reload()
+                }
+            })
 
-        items.add(ColorPickerItemRenderer(this, "Text", p.fontColor) {
-            showCustomColorPicker(p.fontColor) {
-                p.fontColor = it
-                notifyUpdate(this)
-                ThemeStore.get().refresh()
-                reload()
-            }
+            items.add(ColorPickerItemRenderer(this, "Text", p.fontColor) {
+                showCustomColorPicker(p.fontColor) {
+                    p.fontColor = it
+                    notifyUpdate(this)
+                    ThemeStore.get().refresh()
+                    reload()
+                }
+            })
+        }
+
+        items.add(DividerItemRenderer(this))
+        items.add(HeaderItemRenderer(this, "Widget"))
+        items.add(InlineEditItemRenderer(this, hostView, listView, "Note", p.widgetNote ?: "", "Enter widget note") {
+            p.widgetNote = it
+            notifyUpdate(this)
+        })
+        items.add(ToggleItemRenderer(this, "Transparent background", p.isWidgetTransparent) {
+            p.isWidgetTransparent = it
+            notifyUpdate(this)
         })
 
         listView.setItems(items)

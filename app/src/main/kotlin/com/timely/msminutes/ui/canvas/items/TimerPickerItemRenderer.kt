@@ -38,12 +38,15 @@ class TimerPickerItemRenderer(
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
         val pickerWidth = width / 3f
         
+        hourPicker.itemTop = top
         hourPicker.onLayout(0f, 0f, pickerWidth, height)
         hourPicker.draw(canvas, tokens)
         
+        minutePicker.itemTop = top
         minutePicker.onLayout(pickerWidth, 0f, pickerWidth * 2f, height)
         minutePicker.draw(canvas, tokens)
         
+        secondPicker.itemTop = top
         secondPicker.onLayout(pickerWidth * 2f, 0f, width, height)
         secondPicker.draw(canvas, tokens)
     }

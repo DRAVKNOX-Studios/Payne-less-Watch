@@ -107,22 +107,13 @@ class TimerFragment : Fragment(), ThemeListener {
 
     fun showCreateDialog() {
         if (currentDialog != null) return
-        val repo = repository ?: return
+        if (repository == null) return
 
         val dialog = TimerCreateDialog(
             requireContext(),
             object : TimerCreateDialog.OnCreateListener {
                 override fun onCreate(item: TimerItem?) {
-                    if (item == null) return
-                    AppExecutors.get().diskIO {
-                        repo.insert(item)
-                        actionHandler?.startTimerAsync(item)
-                        AppExecutors.get().mainThread {
-                            if (!isAdded) return@mainThread
-                            notifyUpdate(requireContext())
-                            reload()
-                        }
-                    }
+                    createTimer(item)
                 }
                 override fun onPickCustomSound() {
                     val intent = android.content.Intent(android.content.Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -135,6 +126,20 @@ class TimerFragment : Fragment(), ThemeListener {
         dialog.setOnDismissListener { currentDialog = null }
         currentDialog = dialog
         dialog.show()
+    }
+
+    fun createTimer(item: TimerItem?) {
+        if (item == null) return
+        val repo = repository ?: return
+        AppExecutors.get().diskIO {
+            repo.insert(item)
+            actionHandler?.startTimerAsync(item)
+            AppExecutors.get().mainThread {
+                if (!isAdded) return@mainThread
+                notifyUpdate(requireContext())
+                reload()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -51,7 +51,7 @@ class AnalogClockRenderer(private val density: Float) {
         val hour = calendar.get(Calendar.HOUR)
         val minute = calendar.get(Calendar.MINUTE)
 
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val strokePaint = BaseItemRenderer.strokePaint
         val bgPaint = BaseItemRenderer.bgPaint
 
@@ -111,7 +111,7 @@ class AnalogClockRenderer(private val density: Float) {
     }
 
     private fun drawEye(canvas: Canvas, cx: Float, cy: Float, radius: Float, px: Float, py: Float, tokens: ThemeTokens) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val strokePaint = BaseItemRenderer.strokePaint
         val bgPaint = BaseItemRenderer.bgPaint
 
@@ -135,7 +135,7 @@ class AnalogClockRenderer(private val density: Float) {
         val bitmap = Bitmap.createBitmap(size.toInt().coerceAtLeast(1), size.toInt().coerceAtLeast(1), Bitmap.Config.ARGB_8888)
         val faceCanvas = Canvas(bitmap)
 
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val bgPaint = BaseItemRenderer.bgPaint
         val strokePaint = BaseItemRenderer.strokePaint
 

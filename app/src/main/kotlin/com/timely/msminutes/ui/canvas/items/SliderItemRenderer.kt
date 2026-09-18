@@ -20,6 +20,7 @@ class SliderItemRenderer(
     private val trackRect = RectF()
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         canvas.drawText("$label: $value", paddingStart, 24f * density, textPaint)
 

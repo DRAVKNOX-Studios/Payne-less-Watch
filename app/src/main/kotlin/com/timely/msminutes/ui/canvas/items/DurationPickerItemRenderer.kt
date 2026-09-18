@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import com.timely.msminutes.ui.canvas.CanvasRenderer
 import com.timely.msminutes.util.ThemeTokens
 
 class DurationPickerItemRenderer(
@@ -18,7 +19,7 @@ class DurationPickerItemRenderer(
     private val btnBoundsPlus = RectF()
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         val labelY = 36f * density
         canvas.drawText(label, paddingStart, labelY, textPaint)
@@ -55,5 +56,27 @@ class DurationPickerItemRenderer(
             value++
             onValueChange(value)
         }
+    }
+
+    override fun onPopulateAccessibilityItems(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        scrollY: Float
+    ) {
+        val absoluteTop = listBounds.top + top - scrollY
+        val absoluteBottom = absoluteTop + height
+        if (absoluteBottom < listBounds.top || absoluteTop > listBounds.bottom) return
+
+        // Minus button
+        val minusAbs = RectF(listBounds.left + btnBoundsMinus.left, absoluteTop + btnBoundsMinus.top - 8f * density, listBounds.left + btnBoundsMinus.right, absoluteTop + btnBoundsMinus.bottom - 8f * density)
+        items.add(CanvasRenderer.AccessibilityItem(id = 0, bounds = minusAbs, label = "Decrease duration", className = "android.widget.Button"))
+
+        // Current value
+        val valAbs = RectF(listBounds.centerX() - 40f * density, absoluteTop + 50f * density, listBounds.centerX() + 40f * density, absoluteTop + 100f * density)
+        items.add(CanvasRenderer.AccessibilityItem(id = 1, bounds = valAbs, label = "$value minutes", clickable = false))
+
+        // Plus button
+        val plusAbs = RectF(listBounds.left + btnBoundsPlus.left, absoluteTop + btnBoundsPlus.top - 8f * density, listBounds.left + btnBoundsPlus.right, absoluteTop + btnBoundsPlus.bottom - 8f * density)
+        items.add(CanvasRenderer.AccessibilityItem(id = 2, bounds = plusAbs, label = "Increase duration", className = "android.widget.Button"))
     }
 }

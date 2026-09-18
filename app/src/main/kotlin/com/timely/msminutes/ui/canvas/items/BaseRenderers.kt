@@ -1,10 +1,13 @@
 package com.timely.msminutes.ui.canvas.items
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import com.timely.msminutes.ui.canvas.ItemRenderer
+import com.timely.msminutes.util.ThemeTokens
 
 abstract class BaseItemRenderer(context: Context) : ItemRenderer {
     protected val density = context.resources.displayMetrics.density
@@ -33,7 +36,8 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
     open fun populateAccessibility(
         items: MutableList<com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem>,
         listBounds: RectF,
-        absoluteTop: Float
+        absoluteTop: Float,
+        label: String = ""
     ) {
         val absoluteBottom = absoluteTop + height
         val actualWidth = if (width > 0) width else listBounds.width()
@@ -41,7 +45,7 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
             com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem(
                 id = (top.toInt() xor (left.toInt() shl 16)),
                 bounds = RectF(listBounds.left + left, Math.max(listBounds.top, absoluteTop), listBounds.left + left + actualWidth, Math.min(listBounds.bottom, absoluteBottom)),
-                label = "", 
+                label = label, 
                 clickable = true
             )
         )
@@ -54,17 +58,57 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
         internal val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         internal val accentLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         internal val timePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val cardRect = RectF()
 
-        fun resetPaints(density: Float) {
+        fun drawSwipeBackground(
+            canvas: Canvas,
+            tokens: ThemeTokens,
+            width: Float,
+            height: Float,
+            swipeX: Float,
+            density: Float,
+            deleteColor: Int,
+            deleteText: String,
+            copyText: String,
+            vMargin: Float
+        ) {
+            resetPaints(density, tokens)
+            val hMargin = 14f * density
+            val r = 24f * density
+            cardRect.set(hMargin, vMargin, width - hMargin, height - vMargin)
+
+            if (swipeX > 0f) {
+                bgPaint.color = deleteColor
+                canvas.drawRoundRect(cardRect, r, r, bgPaint)
+                
+                subTextPaint.color = Color.WHITE
+                subTextPaint.typeface = Typeface.DEFAULT_BOLD
+                subTextPaint.textSize = 15f * density
+                canvas.drawText(deleteText, hMargin + 18f * density, height / 2f + 6f * density, subTextPaint)
+            } else if (swipeX < 0f) {
+                bgPaint.color = tokens.accent
+                canvas.drawRoundRect(cardRect, r, r, bgPaint)
+                
+                subTextPaint.color = Color.WHITE
+                subTextPaint.typeface = Typeface.DEFAULT_BOLD
+                subTextPaint.textSize = 15f * density
+                val textW = subTextPaint.measureText(copyText)
+                canvas.drawText(copyText, width - hMargin - 18f * density - textW, height / 2f + 6f * density, subTextPaint)
+            }
+        }
+
+        fun resetPaints(density: Float, tokens: ThemeTokens) {
+            val glowColor = (tokens.accent and 0x00FFFFFF) or (0x88 shl 24)
+            
             textPaint.apply {
                 isAntiAlias = true
                 textSize = 16f * density
                 typeface = Typeface.DEFAULT
                 textAlign = Paint.Align.LEFT
                 style = Paint.Style.FILL
-                color = 0xFF000000.toInt()
+                color = tokens.textPrimary
                 alpha = 255
-                clearShadowLayer()
+                setShadowLayer(3f * density, 0f, 0f, glowColor)
                 textScaleX = 1f
                 shader = null
             }
@@ -75,9 +119,9 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
                 typeface = Typeface.DEFAULT
                 textAlign = Paint.Align.LEFT
                 style = Paint.Style.FILL
-                color = 0xFF000000.toInt()
+                color = tokens.textSecondary
                 alpha = 255
-                clearShadowLayer()
+                setShadowLayer(2f * density, 0f, 0f, glowColor)
                 shader = null
             }
 
@@ -97,15 +141,17 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
                 strokeWidth = 1f * density
                 strokeCap = Paint.Cap.BUTT
                 strokeJoin = Paint.Join.MITER
-                color = 0xFF000000.toInt()
-                alpha = 255
+                color = tokens.textPrimary
+                alpha = 0x33
+                clearShadowLayer()
             }
 
             accentLinePaint.apply {
                 isAntiAlias = true
                 style = Paint.Style.FILL
-                color = 0xFF000000.toInt()
+                color = tokens.accent
                 alpha = 255
+                setShadowLayer(8f * density, 0f, 0f, tokens.accent)
             }
 
             timePaint.apply {
@@ -113,9 +159,11 @@ abstract class BaseItemRenderer(context: Context) : ItemRenderer {
                 textSize = 54f * density
                 typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
                 textAlign = Paint.Align.LEFT
-                color = 0xFF000000.toInt()
+                color = tokens.textPrimary
                 alpha = 255
+                setShadowLayer(10f * density, 0f, 0f, tokens.accent)
             }
         }
     }
 }
+

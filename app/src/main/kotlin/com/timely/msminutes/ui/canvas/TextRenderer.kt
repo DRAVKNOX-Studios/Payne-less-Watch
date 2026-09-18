@@ -24,7 +24,9 @@ class TextRenderer(
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens) {
         if (!isVisible) return
+        val glowColor = (tokens.accent and 0x00FFFFFF) or (0x88 shl 24)
         paint.color = tokens.textSecondary
+        paint.setShadowLayer(3f * density, 0f, 0f, glowColor)
         val textY = bounds.centerY() - (paint.descent() + paint.ascent()) / 2f
         canvas.drawText(text, bounds.centerX(), textY, paint)
     }

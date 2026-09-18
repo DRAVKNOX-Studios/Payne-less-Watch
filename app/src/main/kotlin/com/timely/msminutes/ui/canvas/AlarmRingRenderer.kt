@@ -35,7 +35,7 @@ class AlarmRingRenderer(
         // Draw background with accent color
         canvas.drawColor(tokens.accent)
 
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val timePaint = BaseItemRenderer.timePaint
         val textPaint = BaseItemRenderer.textPaint
         val subTextPaint = BaseItemRenderer.subTextPaint

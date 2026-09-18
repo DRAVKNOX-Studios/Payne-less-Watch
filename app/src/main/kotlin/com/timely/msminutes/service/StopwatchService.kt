@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.timely.msminutes.R
 import com.timely.msminutes.data.Prefs
 import com.timely.msminutes.receiver.NotificationActionReceiver
 import com.timely.msminutes.ui.MainActivity
@@ -34,12 +35,12 @@ class StopwatchService : Service() {
         prefs = Prefs(this)
         buildPendingIntents()
         builder = NotificationCompat.Builder(this, NotificationChannels.STOPWATCH_RUNNING)
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .setContentTitle("Stopwatch")
+            .setSmallIcon(R.drawable.ic_stopwatch)
+            .setContentTitle(getString(R.string.stopwatch))
             .setOngoing(true)
             .setContentIntent(contentPi)
-            .addAction(0, "Lap", lapPi)
-            .addAction(0, "End", stopPi)
+            .addAction(0, getString(R.string.lap), lapPi)
+            .addAction(0, getString(R.string.end), stopPi)
     }
 
     private fun buildPendingIntents() {
@@ -131,12 +132,12 @@ class StopwatchService : Service() {
             TimeFormatUtil.formatStopwatch(elapsed)
         }
         val b = builder ?: NotificationCompat.Builder(this, NotificationChannels.STOPWATCH_RUNNING)
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .setContentTitle("Stopwatch")
+            .setSmallIcon(R.drawable.ic_stopwatch)
+            .setContentTitle(getString(R.string.stopwatch))
             .setOngoing(true)
             .setContentIntent(contentPi)
-            .addAction(0, "Lap", lapPi)
-            .addAction(0, "End", stopPi)
+            .addAction(0, getString(R.string.lap), lapPi)
+            .addAction(0, getString(R.string.end), stopPi)
             .also { builder = it }
 
         return b.setContentText(displayText).build()

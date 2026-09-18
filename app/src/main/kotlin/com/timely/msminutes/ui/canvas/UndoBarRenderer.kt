@@ -32,19 +32,25 @@ class UndoBarRenderer(
     override fun draw(canvas: Canvas, tokens: ThemeTokens) {
         if (!isVisible) return
 
+        val glowColor = (tokens.accent and 0x00FFFFFF) or (0x88 shl 24)
+
         // Draw background (rounded rect)
         bgPaint.color = tokens.surface
+        bgPaint.setShadowLayer(8f * density, 0f, 4f * density, 0x44000000)
         canvas.drawRoundRect(bounds, 8f * density, 8f * density, bgPaint)
+        bgPaint.clearShadowLayer()
 
         // Draw message
         textPaint.color = tokens.textPrimary
         textPaint.isFakeBoldText = false
+        textPaint.setShadowLayer(3f * density, 0f, 0f, glowColor)
         val textY = bounds.centerY() - (textPaint.descent() + textPaint.ascent()) / 2f
         canvas.drawText(message, bounds.left + 16f * density, textY, textPaint)
 
         // Draw UNDO button
         textPaint.color = tokens.accent
         textPaint.isFakeBoldText = true
+        textPaint.setShadowLayer(4f * density, 0f, 0f, tokens.accent)
         canvas.drawText("UNDO", undoBtnBounds.left, textY, textPaint)
     }
 

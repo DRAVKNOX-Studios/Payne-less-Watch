@@ -96,6 +96,7 @@ class WheelPickerRenderer(
         
         val centerY = bounds.centerY()
         val count = (maxValue - minValue) + 1
+        val glowColor = (tokens.accent and 0x00FFFFFF) or (0x88 shl 24)
         
         val firstVisibleItem = (scrollY / itemHeight).toInt() - 3
         val lastVisibleItem = (scrollY / itemHeight).toInt() + 3
@@ -117,6 +118,7 @@ class WheelPickerRenderer(
             textPaint.color = tokens.textPrimary
             textPaint.alpha = (alpha * 255).toInt()
             textPaint.textSize = (18f + 6f * alpha) * density
+            textPaint.setShadowLayer(4f * density * alpha, 0f, 0f, glowColor)
             
             val label = labels?.getOrNull(displayIndex) ?: (minValue + displayIndex).toString().padStart(2, '0')
             canvas.drawText(label, bounds.centerX(), itemY + itemHeight / 2f + textPaint.textSize / 3f, textPaint)

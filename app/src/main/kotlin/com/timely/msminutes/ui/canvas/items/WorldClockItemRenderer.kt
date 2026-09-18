@@ -1,9 +1,9 @@
 package com.timely.msminutes.ui.canvas.items
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.RectF
 import android.graphics.Typeface
+import com.timely.msminutes.R
 import com.timely.msminutes.ui.canvas.ItemRenderer
 import com.timely.msminutes.util.ThemeTokens
 import com.timely.msminutes.util.TimeFormatUtil
@@ -29,30 +29,21 @@ class WorldClockItemRenderer(
     override val isSwipeable: Boolean = true
 
     private val cardRect = RectF()
-    private val deleteColor = Color.parseColor("#E53935")
 
     override fun drawBackground(canvas: Canvas, tokens: ThemeTokens, width: Float) {
         if (swipeX > 0f) {
-            BaseItemRenderer.resetPaints(density)
-            val bgPaint = BaseItemRenderer.bgPaint
-            val subTextPaint = BaseItemRenderer.subTextPaint
-
-            val r = 24f * density
-            val hMargin = 14f * density
-            cardRect.set(hMargin, 8f * density, width - hMargin, height - 8f * density)
-            
-            bgPaint.color = deleteColor
-            canvas.drawRoundRect(cardRect, r, r, bgPaint)
-            
-            subTextPaint.color = Color.WHITE
-            subTextPaint.typeface = Typeface.DEFAULT_BOLD
-            subTextPaint.textSize = 15f * density
-            canvas.drawText("DELETE", hMargin + 18f * density, height / 2f + 6f * density, subTextPaint)
+            BaseItemRenderer.drawSwipeBackground(
+                canvas, tokens, width, height, swipeX, density,
+                context.getColor(R.color.delete_red),
+                context.getString(R.string.delete),
+                "", // No copy for world clock
+                8f * density
+            )
         }
     }
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val bgPaint = BaseItemRenderer.bgPaint
         val strokePaint = BaseItemRenderer.strokePaint
         val accentLinePaint = BaseItemRenderer.accentLinePaint

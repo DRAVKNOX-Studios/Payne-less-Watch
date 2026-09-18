@@ -91,17 +91,17 @@ class TimerService : Service() {
         )
 
         val lbl = item.label
-        val title = if (!lbl.isNullOrEmpty()) "Timer: " + lbl else "Timer done"
+        val title = if (!lbl.isNullOrEmpty()) getString(R.string.timer) + ": " + lbl else getString(R.string.timer_done)
 
         return NotificationCompat.Builder(this, NotificationChannels.TIMER_RUNNING)
             .setSmallIcon(R.drawable.ic_timer)
             .setContentTitle(title)
-            .setContentText("Time is up")
+            .setContentText(getString(R.string.time_is_up))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(contentPi)
             .setOngoing(true)
-            .addAction(0, "End", stopPi)
+            .addAction(0, getString(R.string.end), stopPi)
             .build()
     }
 

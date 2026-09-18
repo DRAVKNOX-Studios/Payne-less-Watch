@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.util.Log
@@ -21,6 +22,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.WindowCompat
+import com.timely.msminutes.R
 import com.timely.msminutes.data.Prefs
 
 object ThemeUtil {
@@ -129,8 +131,9 @@ object ThemeUtil {
     fun applyCardStyle(card: View?, prefs: Prefs) {
         if (card == null) return
         val bg = prefs.backgroundColor
+        val context = card.context
         val cardBg = if (!prefs.isCustomTheme) {
-            Color.parseColor("#FDFDFD")
+            context.getColor(R.color.widget_background)
         } else if (isColorLight(bg)) {
             Color.argb(20, 0, 0, 0)
         } else {
@@ -139,9 +142,9 @@ object ThemeUtil {
         
         val gd = GradientDrawable()
         gd.setColor(cardBg)
-        gd.cornerRadius = dpToPx(card.context, 24).toFloat()
+        gd.cornerRadius = dpToPx(context, 24).toFloat()
         if (!prefs.isCustomTheme) {
-            gd.setStroke(dpToPx(card.context, 1), Color.parseColor("#E0E0E0"))
+            gd.setStroke(dpToPx(context, 1), context.getColor(R.color.widget_stroke))
         }
         card.background = gd
         applyColorsIterative(card, prefs.fontColor)
@@ -168,10 +171,10 @@ object ThemeUtil {
     fun dpToPx(context: Context, dp: Int): Int =
         Math.round(dp * context.resources.displayMetrics.density)
 
-    fun getSettingsColorPreview(color: Int, density: Float): android.graphics.drawable.Drawable {
+    fun getSettingsColorPreview(color: Int, density: Float, context: Context): Drawable {
         return SharedDrawablePool.get(
             color, 0, density,
-            Color.parseColor("#E0E0E0"), 2,
+            context.getColor(R.color.widget_stroke), 2,
             SharedDrawablePool.SHAPE_OVAL
         )
     }

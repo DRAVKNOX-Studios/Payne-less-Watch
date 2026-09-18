@@ -33,7 +33,9 @@ class ColorGridRenderer(
             val cy = bounds.top + spacing + row * (swatchSize + spacing) + swatchSize / 2f
             
             paint.color = colors[i]
+            paint.setShadowLayer(8f * density, 0f, 0f, (colors[i] and 0x00FFFFFF) or (0x44 shl 24))
             canvas.drawCircle(cx, cy, swatchSize / 2f, paint)
+            paint.clearShadowLayer()
             
             strokePaint.color = (tokens.textPrimary and 0x00FFFFFF) or 0x33000000
             canvas.drawCircle(cx, cy, swatchSize / 2f, strokePaint)

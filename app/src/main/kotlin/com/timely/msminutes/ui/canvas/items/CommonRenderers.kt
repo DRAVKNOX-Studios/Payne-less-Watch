@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.graphics.Typeface
+import com.timely.msminutes.ui.canvas.CanvasRenderer
 import com.timely.msminutes.util.ThemeTokens
 
 class HeaderItemRenderer(context: Context, private val title: String) : BaseItemRenderer(context) {
     override var height: Float = 72f * density
     
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         textPaint.textSize = 13f * density
         textPaint.color = tokens.accent
@@ -20,9 +21,14 @@ class HeaderItemRenderer(context: Context, private val title: String) : BaseItem
 
     override fun onClick(x: Float, y: Float) {}
 
-    override fun populateAccessibility(items: MutableList<com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem>, listBounds: RectF, absoluteTop: Float) {
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
         items.add(
-            com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem(
+            CanvasRenderer.AccessibilityItem(
                 id = (top.toInt() and 0xFFFF),
                 bounds = RectF(listBounds.left, Math.max(listBounds.top, absoluteTop), listBounds.right, Math.min(absoluteTop + height, listBounds.bottom)),
                 label = title,
@@ -40,7 +46,7 @@ class ToggleItemRenderer(
 ) : BaseItemRenderer(context) {
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         val textY = height / 2f + 6f * density
         canvas.drawText(label, paddingStart, textY, textPaint)
@@ -70,12 +76,17 @@ class ToggleItemRenderer(
         return (this and 0x00FFFFFF) or (alpha shl 24)
     }
 
-    override fun populateAccessibility(items: MutableList<com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem>, listBounds: RectF, absoluteTop: Float) {
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
         items.add(
-            com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem(
+            CanvasRenderer.AccessibilityItem(
                 id = (top.toInt() and 0xFFFF),
                 bounds = RectF(listBounds.left, Math.max(listBounds.top, absoluteTop), listBounds.right, Math.min(absoluteTop + height, listBounds.bottom)),
-                label = label,
+                label = this.label,
                 className = "android.widget.Switch",
                 selected = isChecked
             )
@@ -91,7 +102,7 @@ class EditItemRenderer(
 ) : BaseItemRenderer(context) {
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         val labelY = height / 2f - 4f * density
         canvas.drawText(label, paddingStart, labelY, textPaint)
@@ -105,12 +116,17 @@ class EditItemRenderer(
         onClickAction()
     }
 
-    override fun populateAccessibility(items: MutableList<com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem>, listBounds: RectF, absoluteTop: Float) {
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
         items.add(
-            com.timely.msminutes.ui.canvas.CanvasRenderer.AccessibilityItem(
+            CanvasRenderer.AccessibilityItem(
                 id = (top.toInt() and 0xFFFF),
                 bounds = RectF(listBounds.left, Math.max(listBounds.top, absoluteTop), listBounds.right, Math.min(absoluteTop + height, listBounds.bottom)),
-                label = "$label: ${value.ifEmpty { "None" }}",
+                label = "${this.label}: ${value.ifEmpty { "None" }}",
                 className = "android.widget.Button"
             )
         )
@@ -125,7 +141,7 @@ class SelectorItemRenderer(
 ) : BaseItemRenderer(context) {
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         val labelY = height / 2f + 6f * density
         canvas.drawText(label, paddingStart, labelY, textPaint)
@@ -139,6 +155,15 @@ class SelectorItemRenderer(
     override fun onClick(x: Float, y: Float) {
         onClickAction()
     }
+
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
+        super.populateAccessibility(items, listBounds, absoluteTop, "${this.label}: $selectedValue")
+    }
 }
 
 class ColorPickerItemRenderer(
@@ -149,7 +174,7 @@ class ColorPickerItemRenderer(
 ) : BaseItemRenderer(context) {
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        resetPaints(density)
+        resetPaints(density, tokens)
         textPaint.color = tokens.textPrimary
         val labelY = height / 2f + 6f * density
         canvas.drawText(label, paddingStart, labelY, textPaint)
@@ -163,5 +188,37 @@ class ColorPickerItemRenderer(
 
     override fun onClick(x: Float, y: Float) {
         onClickAction()
+    }
+
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
+        super.populateAccessibility(items, listBounds, absoluteTop, this.label)
+    }
+}
+
+class DividerItemRenderer(context: Context) : BaseItemRenderer(context) {
+    override var height: Float = 16f * density
+
+    override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
+        resetPaints(density, tokens)
+        strokePaint.color = (tokens.textSecondary and 0x00FFFFFF) or (0x22 shl 24)
+        strokePaint.strokeWidth = 1f * density
+        val y = height / 2f
+        canvas.drawLine(paddingStart, y, width - paddingEnd, y, strokePaint)
+    }
+
+    override fun onClick(x: Float, y: Float) {}
+
+    override fun populateAccessibility(
+        items: MutableList<CanvasRenderer.AccessibilityItem>,
+        listBounds: RectF,
+        absoluteTop: Float,
+        label: String
+    ) {
+        // Dividers don't need accessibility items
     }
 }

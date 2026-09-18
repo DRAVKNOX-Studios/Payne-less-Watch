@@ -21,7 +21,7 @@ class SoundItemRenderer(
     private val paddingStart = 16f * density
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens, width: Float) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val textPaint = BaseItemRenderer.textPaint
         val bgPaint = BaseItemRenderer.bgPaint
 

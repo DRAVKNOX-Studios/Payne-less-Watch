@@ -34,15 +34,26 @@ class DayToggleRenderer(
         val itemWidth = width / 7f
         val radius = 18f * density
         val centerY = height / 2f
+        val glowColor = (tokens.accent and 0x00FFFFFF) or (0x88 shl 24)
         
         for (i in 0..6) {
             val centerX = i * itemWidth + itemWidth / 2f
             val isSelected = selectedDays[i]
             
             bgPaint.color = if (isSelected) tokens.accent else tokens.surface
+            if (isSelected) {
+                bgPaint.setShadowLayer(8f * density, 0f, 0f, tokens.accent)
+            } else {
+                bgPaint.clearShadowLayer()
+            }
             canvas.drawCircle(centerX, centerY, radius, bgPaint)
             
             paint.color = if (isSelected) tokens.font else tokens.textPrimary
+            if (!isSelected) {
+                paint.setShadowLayer(2f * density, 0f, 0f, glowColor)
+            } else {
+                paint.clearShadowLayer()
+            }
             canvas.drawText(dayLabels[i], centerX, centerY + 5f * density, paint)
         }
     }

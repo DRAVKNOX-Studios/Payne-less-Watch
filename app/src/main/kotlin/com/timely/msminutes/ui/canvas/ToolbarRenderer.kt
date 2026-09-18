@@ -32,7 +32,7 @@ class ToolbarRenderer(
     }
 
     override fun draw(canvas: Canvas, tokens: ThemeTokens) {
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val textPaint = BaseItemRenderer.textPaint
 
         val iconSize = if (showBack) 24f * density else 42f * density

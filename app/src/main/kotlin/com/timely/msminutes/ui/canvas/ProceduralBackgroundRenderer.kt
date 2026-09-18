@@ -33,7 +33,7 @@ class ProceduralBackgroundRenderer(context: Context) : CanvasRenderer {
         val currentTime = System.currentTimeMillis()
         val elapsed = (currentTime - startTime) % duration
         
-        BaseItemRenderer.resetPaints(density)
+        BaseItemRenderer.resetPaints(density, tokens)
         val paint = BaseItemRenderer.strokePaint
         paint.style = Paint.Style.STROKE
         paint.strokeCap = Paint.Cap.ROUND

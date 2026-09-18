@@ -4,13 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.view.MotionEvent
-import android.view.View
 import android.widget.OverScroller
 import com.timely.msminutes.util.ThemeTokens
 
 class CanvasListView(
     private val context: Context,
-    private val host: View,
+    val host: CanvasHostView,
     private val onEmptyChange: (Boolean) -> Unit
 ) : CanvasRenderer {
     val d = context.resources.displayMetrics.density
@@ -59,7 +58,7 @@ class CanvasListView(
         }
     }
 
-    private fun layoutItems() {
+    fun layoutItems() {
         var currentTop = 0f
         val w = if (bounds.width() > 0) bounds.width() else context.resources.displayMetrics.widthPixels.toFloat()
         val currentIds = items.map { it.id }.toSet()

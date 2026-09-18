@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.AlarmClock
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -43,7 +44,6 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
     private var repository: AlarmRepository? = null
     private var alarm: Alarm? = null
     private var selectedSoundUri: Uri? = null
-    private var is24Hour = false
     private var prefs: Prefs? = null
 
     private var soundPickerHelper: SoundPickerHelper? = null
@@ -78,7 +78,6 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
         repository = repo
         val p = Prefs(this)
         prefs = p
-        is24Hour = p.is24Hour()
 
         val root = FrameLayout(this)
         setContentView(root)
@@ -132,9 +131,30 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
             val newAlarm = Alarm()
             newAlarm.isGradualVolume = p.isGradualVolumeDefault
             newAlarm.snoozeMinutes   = p.defaultSnoozeMinutes
-            val now = Calendar.getInstance()
-            newAlarm.hour   = now.get(Calendar.HOUR_OF_DAY)
-            newAlarm.minute = now.get(Calendar.MINUTE)
+            
+            // Check for SET_ALARM extras
+            val hour = intent.getIntExtra(AlarmClock.EXTRA_HOUR, -1)
+            val minute = intent.getIntExtra(AlarmClock.EXTRA_MINUTES, -1)
+            val message = intent.getStringExtra(AlarmClock.EXTRA_MESSAGE)
+            val skipUi = intent.getBooleanExtra(AlarmClock.EXTRA_SKIP_UI, false)
+            
+            if (hour != -1 && minute != -1) {
+                newAlarm.hour = hour
+                newAlarm.minute = minute
+                newAlarm.label = message ?: ""
+                newAlarm.isEnabled = true
+                
+                if (skipUi) {
+                    alarm = newAlarm
+                    selectedSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                    save()
+                    return
+                }
+            } else {
+                val now = Calendar.getInstance()
+                newAlarm.hour   = now.get(Calendar.HOUR_OF_DAY)
+                newAlarm.minute = now.get(Calendar.MINUTE)
+            }
             alarm = newAlarm
             selectedSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         }
@@ -143,8 +163,8 @@ class AlarmEditActivity : AppCompatActivity(), ThemeListener {
     private fun reload() {
         val a = alarm ?: return
         val items = mutableListOf<com.timely.msminutes.ui.canvas.ItemRenderer>()
-        
-        items.add(TimePickerItemRenderer(this, hostView, listView, a.hour, a.minute, is24Hour) { h, m ->
+        val is24h = prefs?.is24Hour() ?: false
+        items.add(TimePickerItemRenderer(this, hostView, listView, a.hour, a.minute, is24h) { h, m ->
             a.hour = h
             a.minute = m
         })
