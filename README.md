@@ -3,7 +3,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/DRAVKNOX-Studios/payne-less-watch)
 ![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen)
 
-# Payne-less : Watch v2.2.0
+# Payne-less : Watch v2.3.0
 
 Package: com.timely.msminutes (codename "timely")
 
@@ -27,6 +27,7 @@ A lightweight customizable clock that has Alarm with Googly eyes, timer, stopwat
 - Registers directly with the AlarmManager to ensure no background RAM or battery usage <sub>(may require disabling battery optimizations for this app on some OEM skin though)</sub>
 - Uses base Android components, including AppCompat, no Material based UI crap
 - Can run on AOSP forks, and de-googled devices
+- Compatible with Voice Assistants
 
 ## Getting Started
 
@@ -105,7 +106,6 @@ The GitHub repository is the canonical source code location.
 Payne-less: Watch might not be for you if:
 
 * You rely heavily on AI-powered time manager.
-* You want online or voice assistant integrations <sub>The latter claim is untested, it may work with voice assistants or may not.</sub>
 * You want to customize every atom.
 * You need 500 settings for everything.
 

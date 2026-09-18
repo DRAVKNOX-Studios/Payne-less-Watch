@@ -1,0 +1,5 @@
+Minor feature & bug fix release (2.3.0).
+• Added Stopwatch History
+• Fixed Integration with voice assistants for setting Alarm & Timer
+• Accessibility screen reader tree
+• Outline, shadow/glow for text readability
