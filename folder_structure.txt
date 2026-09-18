@@ -25,6 +25,8 @@ Payne-less-Watch
 │   │   │   │               │   ├── DbHelper.kt
 │   │   │   │               │   ├── LapStore.kt
 │   │   │   │               │   ├── Prefs.kt
+│   │   │   │               │   ├── StopwatchHistoryItem.kt
+│   │   │   │               │   ├── StopwatchRepository.kt
 │   │   │   │               │   ├── TimerItem.kt
 │   │   │   │               │   └── TimerRepository.kt
 │   │   │   │               ├── receiver
@@ -54,6 +56,7 @@ Payne-less-Watch
 │   │   │   │               │   │   │   ├── CommonRenderers.kt
 │   │   │   │               │   │   │   ├── DayToggleRenderer.kt
 │   │   │   │               │   │   │   ├── DurationPickerItemRenderer.kt
+│   │   │   │               │   │   │   ├── HistoryItemRenderer.kt
 │   │   │   │               │   │   │   ├── InlineEditItemRenderer.kt
 │   │   │   │               │   │   │   ├── LapItemRenderer.kt
 │   │   │   │               │   │   │   ├── SearchItemRenderer.kt
@@ -92,7 +95,8 @@ Payne-less-Watch
 │   │   │   │               │   ├── settings
 │   │   │   │               │   │   └── SettingsActivity.kt
 │   │   │   │               │   ├── stopwatch
-│   │   │   │               │   │   └── StopwatchFragment.kt
+│   │   │   │               │   │   ├── StopwatchFragment.kt
+│   │   │   │               │   │   └── StopwatchHistoryFragment.kt
 │   │   │   │               │   ├── timer
 │   │   │   │               │   │   ├── TimerActionHandler.kt
 │   │   │   │               │   │   ├── TimerCreateDialog.kt
