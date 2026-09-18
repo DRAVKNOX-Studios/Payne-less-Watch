@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <color name="delete_red">#E53935</color>
+    <color name="shadow_black">#80000000</color>
+    <color name="widget_background">#FDFDFD</color>
+    <color name="widget_stroke">#E0E0E0</color>
+</resources>

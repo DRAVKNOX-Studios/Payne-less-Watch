@@ -1,0 +1,8 @@
+<AppFunctionAppMetadata xmlns:appfn="http://schemas.android.com/apk/androidx.appfunctions"
+    appfn:description="This app manages alarms and timers.
+    Operational Patterns:
+    - Use 'createAlarm' to set a new alarm at a specific hour and minute.
+    - Use 'startTimer' to start a countdown timer for a specific duration.
+    Constraints:
+    - Alarms are set for the next occurrence of the specified time."
+    appfn:displayDescription="@string/app_name" />

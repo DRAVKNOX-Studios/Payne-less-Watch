@@ -63,6 +63,10 @@
             </intent-filter>
         </activity>
 
+        <property
+            android:name="android.app.appfunctions.app_metadata"
+            android:resource="@xml/app_metadata" />
+
         <activity
             android:name=".ui.alarm.AlarmEditActivity"
             android:exported="false"
@@ -171,7 +175,7 @@
             </intent-filter>
             <property
                 android:name="android.app.appfunctions"
-                android:resource="@xml/app_functions" />
+                android:resource="@xml/timely_app_functions" />
         </service>
 
         <receiver

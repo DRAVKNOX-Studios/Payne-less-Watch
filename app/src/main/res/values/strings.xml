@@ -7,4 +7,18 @@
     <string name="shortcut_set_alarm">Set Alarm</string>
     <string name="shortcut_set_timer">Set Timer</string>
     <string name="shortcut_start_stopwatch">Start Stopwatch</string>
+
+    <string name="alarm">Alarm</string>
+    <string name="timer">Timer</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="delete">DELETE</string>
+    <string name="copy">COPY</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="snooze">Snooze</string>
+    <string name="lap">Lap</string>
+    <string name="end">End</string>
+    <string name="ringing">Ringing…</string>
+    <string name="timer_done">Timer done</string>
+    <string name="time_is_up">Time is up</string>
+    <string name="missed_alarm">Missed alarm</string>
 </resources>
